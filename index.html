@@ -411,7 +411,9 @@
       var weight = parseFloat(document.getElementById('calc-weight').value);
       var bf = parseFloat(document.getElementById('calc-bf').value);
       var targetBf = gender === 'male' ? 4.68 : 8.95;
-      var dropPerCycle = 6;
+      var dropPerMonth = 2.8;
+      var weeksPerCycle = 8;
+      var dropPerCycle = dropPerMonth * (weeksPerCycle / 4);
       if (!weight || weight <= 0 || !bf || bf <= targetBf || bf > 70) return;
       var lbm = weight * (1 - bf / 100);
       var finalWeight = lbm / (1 - targetBf / 100);

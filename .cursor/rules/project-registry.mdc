@@ -3,11 +3,12 @@ description: Project map and hosting context
 alwaysApply: true
 ---
 
-# Project context
+# Project context — DEPRECATED REPO
 
-- Full map: `~/operatingmanual/PROJECTS.md`
-- This repo: **Burn & Build** marketing landing on GitHub Pages → burnandbuilddiet.com
-- App/creator: `pwa-burn-and-build` on Render → program-creator-3tzd.onrender.com
-- Reference only: `landing-hardkor` (Hardkor layout source — not deployed)
+**This repo is deprecated.** Do not add landing features here.
 
-Push to `main` deploys via GitHub Pages.
+- **Canonical:** `pwa-burn-and-build` → https://gettheburnandbuildapp.com
+- **This domain:** burnandbuilddiet.com → redirects to canonical
+- **Docs:** `DEPRECATED.md`, `docs/DOMAINS.md`
+
+Landing edits belong in `pwa-burn-and-build/landing/` only.

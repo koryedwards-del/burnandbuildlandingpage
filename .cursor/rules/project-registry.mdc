@@ -3,12 +3,10 @@ description: Project map and hosting context
 alwaysApply: true
 ---
 
-# Project context — DEPRECATED REPO
+# Project context
 
-**This repo is deprecated.** Do not add landing features here.
+- Full map: `docs/DOMAINS.md`
+- This repo: **Burn & Build** marketing landing on GitHub Pages → **burnandbuilddiet.com** (canonical)
+- App/creator: `pwa-burn-and-build` → **gettheburnandbuildapp.com** (`/createyourfoodplan/`, `/myplan/`)
 
-- **Canonical:** `pwa-burn-and-build` → https://gettheburnandbuildapp.com
-- **This domain:** burnandbuilddiet.com → redirects to canonical
-- **Docs:** `DEPRECATED.md`, `docs/DOMAINS.md`
-
-Landing edits belong in `pwa-burn-and-build/landing/` only.
+Push to `main` deploys via GitHub Pages.

@@ -1,24 +1,46 @@
 # Burn & Build — domain coordination
 
-**Canonical site:** `pwa-burn-and-build` → **https://gettheburnandbuildapp.com**
+## Primary marketing site
 
-**This repo (`landing-burn-and-build`):** **deprecated** — `burnandbuilddiet.com` redirects to canonical.
+**https://burnandbuilddiet.com** — this repo (`landing-burn-and-build`)
 
-## Domains
+All landing page edits happen here. Push to `main` deploys via GitHub Pages.
 
-| Domain | Role | Host |
-|--------|------|------|
-| **gettheburnandbuildapp.com** | Primary marketing + app | `pwa-burn-and-build` (GitHub Actions Pages) |
-| **burnandbuilddiet.com** | Legacy alias | This repo — redirect only until deleted |
+## App domain
 
-## Single source of truth
+**https://gettheburnandbuildapp.com** — `pwa-burn-and-build` (creator, myplan, API)
 
-Edit landing only in **`pwa-burn-and-build/landing/`**.
+| Path | Purpose |
+|------|---------|
+| `/` | Redirect to burnandbuilddiet.com (GoDaddy) |
+| `/createyourfoodplan/` | Program creator / checkout |
+| `/myplan/` | Daily app |
 
-## Delete this repo (manual)
+## GoDaddy setup (Kory)
 
-1. **pwa-burn-and-build** → Settings → Pages → add `burnandbuilddiet.com` if you want both domains on one site (update DNS first).
-2. **landing-burn-and-build** → Settings → Pages → remove `burnandbuilddiet.com`.
-3. **landing-burn-and-build** → Settings → Danger zone → Delete repository.
+Redirect **gettheburnandbuildapp.com** → **burnandbuilddiet.com** for the marketing homepage only.
 
-Or keep this repo as a redirect shell until DNS/registrar points `burnandbuilddiet.com` to `gettheburnandbuildapp.com` directly.
+**Important:** Do not redirect these app paths — they must keep working on gettheburnandbuildapp.com:
+
+- `gettheburnandbuildapp.com/createyourfoodplan/`
+- `gettheburnandbuildapp.com/myplan/`
+- `gettheburnandbuildapp.com/support`
+- `gettheburnandbuildapp.com/privacypolicy`
+
+If GoDaddy only offers a whole-domain forward, use **forwarding with path exceptions** or redirect only `www` + apex while leaving app paths on GitHub Pages. When unsure, forward only `gettheburnandbuildapp.com` (no path) and test creator links from the landing CTAs.
+
+## CTAs on this site
+
+**Create Your Diet** buttons link to:
+
+`https://gettheburnandbuildapp.com/createyourfoodplan/?browse=1`
+
+That is correct — checkout runs on the app domain.
+
+## Deprecated
+
+The duplicate landing in `pwa-burn-and-build/landing/` should not be the marketing source of truth once GoDaddy redirect is live. Long term, consider removing `landing/` from the PWA repo or replacing it with a redirect to burnandbuilddiet.com.
+
+## Support email
+
+**support@burnandbuilddiet.com** on this site.

@@ -364,7 +364,7 @@
       <span class="card-label">Back</span>
       <div class="biz-card card-back">
         <div class="qr-block">
-          <img id="qr-code" src="" width="246" height="246" alt="QR code — scan to visit Burn &amp; Build" />
+          <img id="qr-code" src="img/brand/qr-burnandbuilddiet.png" width="246" height="246" alt="QR code — scan to visit burnandbuilddiet.com" />
           <span class="qr-caption">Scan to start</span>
         </div>
         <div class="back-copy">
@@ -407,6 +407,22 @@
         <dt>Bleed</dt>
         <dd>0.125″ all sides if full-bleed black</dd>
       </div>
+      <div>
+        <dt>QR (networking)</dt>
+        <dd><code>img/brand/qr-burnandbuilddiet.png</code> → burnandbuilddiet.com</dd>
+      </div>
+      <div>
+        <dt>QR (referral)</dt>
+        <dd><code>img/brand/qr-createyourfoodplan.png</code> → createyourfoodplan</dd>
+      </div>
+      <div>
+        <dt>Contact</dt>
+        <dd>kory@burnandbuilddiet.com</dd>
+      </div>
+      <div>
+        <dt>Eyebrow</dt>
+        <dd>The Premier Body Recomp Diet</dd>
+      </div>
     </dl>
   </section>
 
@@ -414,20 +430,18 @@
     (function () {
       var targets = {
         landing: {
-          url: 'https://burnandbuilddiet.com',
+          qr: 'img/brand/qr-burnandbuilddiet.png',
           cta: 'See What\'s Possible'
         },
         creator: {
-          url: 'https://gettheburnandbuildapp.com/createyourfoodplan/?browse=1',
+          qr: 'img/brand/qr-createyourfoodplan.png',
           cta: 'Create Your Diet'
         }
       };
 
       function setQr(mode) {
         var t = targets[mode] || targets.landing;
-        var encoded = encodeURIComponent(t.url);
-        document.getElementById('qr-code').src =
-          'https://api.qrserver.com/v1/create-qr-code/?size=246x246&margin=8&color=0A0A0A&bgcolor=FFFFFF&data=' + encoded;
+        document.getElementById('qr-code').src = t.qr;
         document.getElementById('back-cta').textContent = t.cta;
       }
 

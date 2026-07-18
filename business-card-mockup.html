@@ -147,6 +147,12 @@
       background: var(--yellow);
     }
 
+    .qr-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .qr-block img {
       width: 1.06in;
       height: 1.06in;
@@ -158,6 +164,8 @@
     .back-copy {
       display: flex;
       flex-direction: column;
+      align-items: center;
+      text-align: center;
       gap: 0.045in;
       min-width: 0;
     }
@@ -167,6 +175,7 @@
       height: 0.5in;
       object-fit: contain;
       display: block;
+      margin: 0 auto;
     }
 
     .back-url {
@@ -199,6 +208,7 @@
 
     .back-divider {
       width: 100%;
+      max-width: 1.45in;
       height: 1px;
       background: var(--gray-mid);
       margin: 0.03in 0 0.02in;

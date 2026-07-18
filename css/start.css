@@ -1,0 +1,110 @@
+/** Checkout paywall — createyourfoodplan */
+
+.start-site {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  --layout-max: 480px;
+  --start-mobile-ui-lift: 72px;
+  width: 100%;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+@media (max-width: 767px) {
+  .start-site {
+    --start-mobile-ui-lift: 88px;
+  }
+
+  .start-site .ob-welcome-line1,
+  .start-site .ob-welcome-line2 {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+}
+
+@media (min-width: 768px) {
+  .start-site .unlock-panel {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+.start-site .screen {
+  max-width: var(--layout-max);
+}
+
+.start-success {
+  text-align: center;
+  padding: 24px 0;
+}
+
+.start-success .check {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--flame);
+  color: var(--btn-on-flame);
+  font-size: 32px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.unlock-screen {
+  padding-bottom: 40px;
+}
+
+.unlock-panel {
+  padding: 0 24px 32px;
+  max-width: var(--layout-max);
+  margin: 0 auto;
+}
+
+.unlock-lead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #ccc;
+  margin-bottom: 20px;
+}
+
+.unlock-tagline {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 16px 0 24px;
+  text-align: center;
+}
+
+.unlock-cta {
+  width: 100%;
+}
+
+.unlock-cta-secondary {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.unlock-error {
+  background: rgba(255, 204, 0, 0.15);
+  border: 1px solid var(--flame);
+  color: var(--flame);
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.unlock-hint {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.unlock-hint a {
+  color: var(--cyan);
+}

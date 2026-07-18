@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burn &amp; Build — Your Program</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/program-bridge.css?v=63" />
+  <link rel="stylesheet" href="css/report.css?v=63" />
+  <link rel="stylesheet" href="../menuplanner/css/planner.css?v=63" />
+</head>
+<body>
+  <section id="access-gate" class="mp-access" hidden>
+    <div class="mp-access__panel">
+      <img class="mp-access__logo" src="../img/brand/bblogo1.png" alt="Burn &amp; Build" width="72" height="72" />
+      <p class="mp-access__eyebrow">Burn &amp; Build</p>
+
+      <div id="access-screen-email" class="mp-access__screen">
+        <h1 class="mp-access__title">Welcome back</h1>
+        <p class="mp-access__lead">Sign in with the email on your Burn &amp; Build program.</p>
+        <form id="access-form" class="mp-access__form" action="#" method="post" novalidate>
+          <label class="mp-access__field">
+            <span class="mp-access__label">Email</span>
+            <input
+              id="access-email"
+              class="mp-access__input"
+              type="email"
+              name="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            />
+          </label>
+          <p id="access-form-error" class="mp-access__error" hidden></p>
+          <button type="submit" class="mp-access__submit" id="access-submit">Go to your diet</button>
+        </form>
+        <p class="mp-access__footer-note">
+          Need a new diet?
+          <a class="mp-access__link" href="/questionnaire/#welcome">Create your diet</a>
+        </p>
+      </div>
+
+      <div id="access-screen-unpaid" class="mp-access__screen" hidden>
+        <h1 class="mp-access__title">Purchase required</h1>
+        <p class="mp-access__lead">We found a program for <strong id="access-unpaid-email"></strong>, but checkout is not complete yet.</p>
+        <p class="mp-access__copy">The menu planner unlocks after your one-time $149 purchase. Finish checkout to load your servings and start planning meals.</p>
+        <div class="mp-access__actions">
+          <button type="button" class="mp-access__submit" id="access-unpaid-checkout">Complete purchase — $149</button>
+          <button type="button" class="mp-access__ghost" data-access-screen="email">Use a different email</button>
+        </div>
+      </div>
+
+      <div id="access-screen-missing" class="mp-access__screen" hidden>
+        <h1 class="mp-access__title">No program found</h1>
+        <p class="mp-access__lead">We do not have a Burn &amp; Build program saved for <strong id="access-missing-email"></strong>.</p>
+        <p class="mp-access__copy">New programs start with the desktop questionnaire, then checkout, then your program report and menu planner.</p>
+        <div class="mp-access__actions">
+          <a class="mp-access__submit mp-access__submit--link" href="/questionnaire/#welcome">Start your program</a>
+          <button type="button" class="mp-access__ghost" data-access-screen="email">Try a different email</button>
+        </div>
+      </div>
+
+      <div id="access-screen-error" class="mp-access__screen" hidden>
+        <h1 class="mp-access__title">Could not sign in</h1>
+        <p class="mp-access__lead" id="access-error-message"></p>
+        <div class="mp-access__actions">
+          <button type="button" class="mp-access__submit" data-access-screen="email">Try again</button>
+          <a class="mp-access__ghost mp-access__ghost--link" href="/">Back to website</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="r-app" id="r-app">
+    <header class="r-header">
+      <div class="r-brand">
+        <img class="r-logo" src="../img/brand/bblogo1.png" alt="Burn &amp; Build" width="56" height="56" />
+        <div class="r-brand__text">
+          <h1 class="r-title">Your Program</h1>
+        </div>
+      </div>
+    </header>
+
+    <div class="r-layout pb-layout">
+      <aside class="pb-aside">
+        <nav class="r-nav pb-nav" aria-label="Program report">
+          <ol id="r-nav-list" class="pb-nav__list"></ol>
+        </nav>
+        <section class="pb-nav__item pb-nav__item--print-shop" id="print-shop" aria-label="Print shop" hidden>
+          <button type="button" class="pb-nav__btn pb-nav__btn--aux" id="print-shop-open">
+            <span class="pb-nav__btn-line">Print Shop</span>
+            <span class="pb-nav__btn-sub">Week at-a-glance · Grocery list</span>
+          </button>
+        </section>
+        <div class="pb-aside__dock">
+          <section class="pb-nav__section" id="program-library" aria-label="Your diet plans" hidden></section>
+        </div>
+      </aside>
+
+      <div class="pb-main">
+        <main class="r-main" id="r-main"></main>
+
+        <section id="planner-page" class="planner-main" hidden>
+          <div class="pb-page-head">
+            <p class="pb-eyebrow">Page 4</p>
+            <h2 class="pb-panel__title">Menu planner</h2>
+          </div>
+
+          <div class="pb-doc planner-meta" id="planner-meta"></div>
+
+          <main class="planner-frame">
+            <div class="week-panel" id="week-panel">
+              <section class="week-grid" id="week-grid" aria-label="Week plan">
+                <div class="week-grid__bar">
+                  <button
+                    type="button"
+                    class="week-grid__toggle"
+                    id="week-grid-toggle"
+                    aria-expanded="true"
+                    aria-controls="week-grid-matrix"
+                  >
+                    <span class="col-heading col-heading--week">Plan your week grid</span>
+                    <span class="week-grid__hint">Tap to open</span>
+                  </button>
+                  <div class="week-panel__actions">
+                    <div class="planner-toast-host" id="planner-toast-host" aria-live="polite" role="status"></div>
+                  </div>
+                </div>
+                <div class="week-grid__matrix" id="week-grid-matrix"></div>
+              </section>
+            </div>
+
+            <section class="workspace" aria-label="Planner workspace">
+              <div class="workspace__col workspace__col--maker">
+                <div class="meal-maker-card">
+                  <div class="meal-maker-card__head">
+                    <p class="col-heading meal-maker-card__title">Meal maker</p>
+                    <div class="meal-maker-card__actions">
+                      <button type="button" class="meal-maker-card__save" id="save-meal-open" disabled>Save Meal</button>
+                      <button type="button" class="meal-maker-card__clear" id="clear-meal-maker">Clear</button>
+                    </div>
+                  </div>
+                  <div class="meal-maker" id="meal-maker"></div>
+                </div>
+              </div>
+
+              <div class="workspace__col workspace__col--meals">
+                <p class="col-heading">Saved Meals</p>
+                <div class="saved-meals" id="saved-meals"></div>
+              </div>
+
+              <div class="workspace__col workspace__col--foods">
+                <p class="col-heading">Foods</p>
+                <p class="food-filter-label" id="food-filter-label" hidden></p>
+                <input
+                  type="search"
+                  class="food-search"
+                  id="food-search"
+                  placeholder="Search foods…"
+                  autocomplete="off"
+                  hidden
+                />
+                <div class="food-filters" id="food-filters"></div>
+                <div class="food-stack" id="food-stack"></div>
+              </div>
+            </section>
+          </main>
+
+          <footer class="pb-actions">
+            <button type="button" class="pb-btn pb-btn--ghost" data-report-back-servings>← Servings</button>
+          </footer>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <dialog id="print-choice-dialog" class="save-dialog">
+    <div class="save-dialog__form">
+      <p class="save-dialog__title">Print Shop</p>
+      <div class="save-dialog__actions save-dialog__actions--stack">
+        <button type="button" class="save-dialog__btn save-dialog__btn--primary" data-print-view="week">Week at-a-glance</button>
+        <button type="button" class="save-dialog__btn save-dialog__btn--primary" data-print-view="shopping">Grocery list</button>
+        <button type="button" class="save-dialog__btn save-dialog__btn--ghost" id="print-choice-cancel">Cancel</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="save-meal-dialog" class="save-dialog">
+    <form class="save-dialog__form" id="save-meal-form">
+      <p class="save-dialog__title">Name this meal</p>
+      <input
+        type="text"
+        id="save-meal-name"
+        class="save-dialog__input"
+        placeholder="Short name for week grid"
+        maxlength="120"
+        required
+        autocomplete="off"
+      />
+      <div class="save-dialog__actions">
+        <button type="button" class="save-dialog__btn save-dialog__btn--ghost" id="save-meal-cancel">Cancel</button>
+        <button type="submit" class="save-dialog__btn save-dialog__btn--primary">Save Meal</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    document.getElementById('access-form')?.addEventListener('submit', (event) => {
+      event.preventDefault();
+    });
+  </script>
+  <script type="module" src="js/report.js?v=63"></script>
+</body>
+</html>

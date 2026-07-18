@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burn &amp; Build — Program Questionnaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/questionnaire.css?v=63" />
+</head>
+<body>
+  <div class="q-app">
+    <header class="q-header">
+      <div class="q-brand">
+        <img class="q-logo" src="../img/brand/bblogo1.png" alt="Burn &amp; Build" width="56" height="56" />
+        <div class="q-brand__text">
+          <h1 class="q-title">Create Your Diet</h1>
+          <p class="q-tag">Build your personalized program</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="q-layout">
+      <nav class="q-nav" aria-label="Questionnaire steps">
+        <ol class="q-nav__list" id="q-nav-list">
+          <li><span class="q-nav__item is-active">1. Welcome</span></li>
+        </ol>
+      </nav>
+
+      <main class="q-main">
+        <form class="q-form" id="q-form" novalidate>
+          <section class="q-panel" data-step="0">
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Welcome</p>
+              <h2 class="q-panel__title">You&rsquo;re in the right place</h2>
+              <p class="q-panel__lead">
+                You tapped <strong>Create Your Diet</strong> — this is where your program starts.
+                About 10 minutes of intake, then the Burn Engine builds your servings and full program.
+              </p>
+            </div>
+            <div class="q-intro-actions">
+              <button type="button" class="q-btn q-btn--primary" data-q-next>Create your diet →</button>
+              <a class="q-btn q-btn--ghost" href="../program-report/?preview=1">Preview sample program</a>
+            </div>
+            <p class="q-intro-price">$149 one-time purchase · own your program forever</p>
+          </section>
+
+          <section class="q-panel q-panel--personal" data-step="1" hidden>
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Step 2</p>
+              <h2 class="q-panel__title">Personal information</h2>
+              <p class="q-panel__lead">The basics we need before calculating your servings and food plan.</p>
+            </div>
+            <div class="q-personal-grid">
+              <label class="q-field q-personal-grid__name">
+                <span class="q-label">First name</span>
+                <input class="q-input" name="preferredName" autocomplete="given-name" required />
+              </label>
+              <div class="q-field q-personal-grid__date">
+                <span class="q-label">Today's date</span>
+                <p class="q-static-value" id="q-intake-date-display"></p>
+                <input type="hidden" name="intakeDate" />
+              </div>
+
+              <div class="q-personal-grid__stack q-personal-grid__contact-left">
+                <label class="q-field">
+                  <span class="q-label">Phone <span class="q-optional">(optional)</span></span>
+                  <input class="q-input" type="tel" name="phone" autocomplete="tel" />
+                </label>
+                <div class="q-field" role="group" aria-labelledby="q-gender-label">
+                  <span class="q-label" id="q-gender-label">Gender</span>
+                  <div class="q-segmented q-segmented--pair">
+                    <label class="q-segment"><input type="radio" name="sex" value="female" /> Female</label>
+                    <label class="q-segment"><input type="radio" name="sex" value="male" /> Male</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="q-personal-grid__stack q-personal-grid__contact-right">
+                <label class="q-field">
+                  <span class="q-label">Email</span>
+                  <input class="q-input" type="email" name="email" autocomplete="email" required />
+                </label>
+                <div class="q-newsletter">
+                  <p class="q-newsletter__lead">Maybe you&rsquo;d like a touch of motivation going into every weekend.</p>
+                  <label class="q-check q-check--compact">
+                    <input type="checkbox" name="newsletterOptIn" />
+                    <span>Yes, add me to the weekly newsletter</span>
+                  </label>
+                </div>
+              </div>
+
+              <label class="q-field q-personal-grid__height">
+                <span class="q-label">Height</span>
+                <div class="q-inline">
+                  <input class="q-input q-input--short" name="heightFeet" inputmode="numeric" placeholder="ft" />
+                  <span class="q-unit">ft</span>
+                  <input class="q-input q-input--short" name="heightInchesPart" inputmode="numeric" placeholder="in" />
+                  <span class="q-unit">in</span>
+                </div>
+              </label>
+              <label class="q-field q-personal-grid__weight">
+                <span class="q-label">Weight</span>
+                <div class="q-inline">
+                  <input class="q-input q-input--short" name="weight" inputmode="decimal" required />
+                  <span class="q-unit">lbs</span>
+                </div>
+              </label>
+              <label class="q-field q-personal-grid__birth">
+                <span class="q-label">Birthdate</span>
+                <input class="q-input" name="birthDate" type="date" />
+              </label>
+              <div class="q-field q-personal-grid__age">
+                <span class="q-label">Age <span class="q-optional">(from birthdate)</span></span>
+                <p class="q-static-value q-static-value--short" id="q-age-display" aria-live="polite"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="q-panel q-panel--workday" data-step="2" hidden>
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Step 3</p>
+              <h2 class="q-panel__title">Workday &amp; occupation</h2>
+              <p class="q-panel__lead">How active is your job, and how stressful is a typical day?</p>
+            </div>
+            <div class="q-workday">
+              <div class="q-field q-choice-group">
+                <span class="q-label">Typical exertion at work</span>
+                <div class="q-options q-options--cards">
+                  <label class="q-radio-card"><input type="radio" name="workPhysical" value="sitting" /><span class="q-radio-card__body"><span class="q-radio-card__title">Sitting</span><span class="q-radio-card__sub">Office, reception, desk work</span></span></label>
+                  <label class="q-radio-card"><input type="radio" name="workPhysical" value="feet" /><span class="q-radio-card__body"><span class="q-radio-card__title">Moving</span><span class="q-radio-card__sub">Delivery, warehouse, on your feet</span></span></label>
+                  <label class="q-radio-card"><input type="radio" name="workPhysical" value="carrying" /><span class="q-radio-card__body"><span class="q-radio-card__title">Lifting</span><span class="q-radio-card__sub">Heavy physical lifting and carrying</span></span></label>
+                </div>
+              </div>
+              <div class="q-field q-choice-group">
+                <span class="q-label">Is your typical day…</span>
+                <div class="q-segmented q-segmented--equal">
+                  <label class="q-segment"><input type="radio" name="workStress" value="comfortable" /> Comfortable</label>
+                  <label class="q-segment"><input type="radio" name="workStress" value="busy" /> Busy</label>
+                  <label class="q-segment"><input type="radio" name="workStress" value="stressful" /> Stressful</label>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="q-panel" data-step="3" hidden>
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Step 4</p>
+              <h2 class="q-panel__title">Weekly exercise — next 8 weeks</h2>
+              <p class="q-panel__lead">Be realistic about the exercise you will commit to for the next 8 weeks. Conservative is better.</p>
+            </div>
+            <p class="q-hint">Enter hours per week down to the quarter hour (15 minutes).</p>
+            <div class="q-activity-list">
+              <label class="q-activity">
+                <span class="q-activity__label">SAG — stop &amp; go</span>
+                <span class="q-activity__desc">Weight training, racquet sports. Count only time under load or moving — not rest between sets.</span>
+                <div class="q-inline">
+                  <input class="q-input q-input--short" name="weightTrainingHours" inputmode="decimal" placeholder="0" />
+                  <span class="q-unit">hrs / week</span>
+                </div>
+              </label>
+              <label class="q-activity">
+                <span class="q-activity__label">Vigorous activity</span>
+                <span class="q-activity__desc">Heart rate over 140 BPM — cardiovascular training.</span>
+                <div class="q-inline">
+                  <input class="q-input q-input--short" name="cardioHours" inputmode="decimal" placeholder="0" />
+                  <span class="q-unit">hrs / week</span>
+                </div>
+                <span class="q-activity__meta" data-hr-cardio>Target zone — BPM</span>
+              </label>
+              <label class="q-activity">
+                <span class="q-activity__label">Moderate activity</span>
+                <span class="q-activity__desc">Heart rate under 140 BPM — fat burning pace. Housework and errands count.</span>
+                <div class="q-inline">
+                  <input class="q-input q-input--short" name="fatBurningHours" inputmode="decimal" placeholder="3" />
+                  <span class="q-unit">hrs / week</span>
+                </div>
+                <span class="q-activity__meta" data-hr-fat>Target zone — BPM</span>
+              </label>
+            </div>
+          </section>
+
+          <section class="q-panel" data-step="4" hidden>
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Step 5</p>
+              <h2 class="q-panel__title">Body composition</h2>
+              <p class="q-panel__lead">Required for accurate servings. Body composition drives the whole plan.</p>
+            </div>
+            <fieldset class="q-field">
+              <legend class="q-label">How do you know your body composition?</legend>
+              <div class="q-options">
+                <label class="q-option"><input type="radio" name="fatSource" value="dexa" /> DEXA scan</label>
+                <label class="q-option"><input type="radio" name="fatSource" value="recent" /> Calipers, ultrasound, or BodPod</label>
+                <label class="q-option"><input type="radio" name="fatSource" value="guess" /> I'm estimating</label>
+              </div>
+            </fieldset>
+            <label class="q-field">
+              <span class="q-label">Body composition</span>
+              <div class="q-inline">
+                <input class="q-input q-input--short" name="fatPercent" inputmode="decimal" required />
+                <span class="q-unit">%</span>
+              </div>
+            </label>
+          </section>
+
+          <section class="q-panel" data-step="5" hidden>
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Step 6</p>
+              <h2 class="q-panel__title">Agreement</h2>
+              <p class="q-panel__lead">Required before we calculate your program.</p>
+            </div>
+            <div class="q-waiver">
+              <p>I agree the results of this questionnaire and computer printout are meant to be informative and <strong>are not</strong> a recommendation or a prescription. I also agree I should consult my doctor before making any changes to my diet or exercise habits. In addition I will not hold Kory Edwards or his employees or representatives responsible for damage or injury to my person or property.</p>
+            </div>
+            <label class="q-check q-check--block">
+              <input type="checkbox" name="waiverAccepted" required />
+              <span>I have read and agree to the above</span>
+            </label>
+            <div class="q-grid q-grid--2">
+              <label class="q-field">
+                <span class="q-label">Signature (type your name)</span>
+                <input class="q-input" name="signature" autocomplete="name" />
+              </label>
+              <label class="q-field">
+                <span class="q-label">Date signed</span>
+                <input class="q-input" type="date" name="signatureDate" />
+              </label>
+            </div>
+          </section>
+
+          <section class="q-panel" data-step="6" hidden>
+            <div class="q-panel__head">
+              <p class="q-eyebrow">Step 7</p>
+              <h2 class="q-panel__title">Review &amp; continue</h2>
+              <p class="q-panel__lead">Confirm your answers, then continue to secure checkout ($149).</p>
+            </div>
+            <dl class="q-review" id="q-review"></dl>
+            <button type="button" class="q-btn q-btn--primary" id="q-continue">Complete purchase →</button>
+          </section>
+        </form>
+
+        <footer class="q-actions" id="q-actions" hidden>
+          <button type="button" class="q-btn q-btn--ghost" data-q-back hidden>Back</button>
+          <button type="button" class="q-btn q-btn--primary" data-q-next>Next</button>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script type="module" src="js/questionnaire.js?v=63"></script>
+</body>
+</html>

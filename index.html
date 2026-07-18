@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="canonical" href="https://burnandbuilddiet.com/" />
-  <meta name="description" content="A custom diet built from your body composition, job, workouts, and daily activity. No calorie counting. No guesswork. Athlete-tested since 1982." />
+  <meta name="apple-mobile-web-app-capable" content="no" />
+  <meta name="mobile-web-app-capable" content="no" />
   <meta name="theme-color" content="#0A0A0A" />
   <title>Burn &amp; Build — Keep the Muscle. Lose the Fat.</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -24,6 +24,19 @@
     .hero-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.275rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--yellow); margin-bottom: 20px; opacity: 0; animation: fadeUp 0.7s 0.1s forwards; }
     .hero-headline { font-family: 'Barlow Condensed', sans-serif; font-weight: 900; font-size: clamp(2rem, 6vw, 4.5rem); line-height: 1.05; text-transform: uppercase; letter-spacing: 0.02em; max-width: 900px; margin: 24px 0 16px; opacity: 0; animation: fadeUp 0.7s 0.6s forwards; color: var(--gray-heading); }
     .hero-headline .hero-line-accent { color: var(--yellow); }
+    .hero-cta { margin-top: 32px; opacity: 0; animation: fadeUp 0.7s 0.85s forwards; }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 18px !important;
+      background: var(--yellow) !important;
+      color: var(--black) !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.08em !important;
+    }
+    .nav-cta:hover { opacity: 0.85; color: var(--black) !important; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 
     .btn-cta {
@@ -200,7 +213,7 @@
       <li><a href="#calculator">What's Possible</a></li>
       <li><a href="#how">What You Get</a></li>
       <li><a href="#who">Who It's For</a></li>
-      <li><a href="#pricing">Get Started</a></li>
+      <li><a href="/program-report/?page=menuplanner" class="nav-cta">Access Your Diet</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -210,15 +223,17 @@
     <a href="#calculator">What's Possible</a>
     <a href="#how">What You Get</a>
     <a href="#who">Who It's For</a>
-    <a href="#pricing">Get Started</a>
-    <a href="/privacypolicy.html">Privacy Policy</a>
-    <a href="/support.html">Support</a>
+    <a href="/program-report/?page=menuplanner">Access Your Diet</a>
+    <a href="#pricing">Pricing</a>
+    <a href="/privacypolicy">Privacy Policy</a>
+    <a href="/support">Support</a>
   </div>
 
   <section class="hero">
     <p class="hero-eyebrow">The Premier Body Recomp Diet</p>
-    <img class="hero-logo" src="img/brand/bblogo.png" alt="Burn &amp; Build" />
+    <img class="hero-logo" src="/img/brand/bblogo1.png" alt="Burn &amp; Build" />
     <h1 class="hero-headline"><span class="hero-line-accent">Lose the Fat.</span><br />Keep the Muscle.</h1>
+    <a class="btn-cta hero-cta" href="/questionnaire/#welcome">Create Your Diet &rarr;</a>
   </section>
 
   <section class="guide" id="guide">
@@ -238,7 +253,7 @@
           <div class="guide-cta-price">$149</div>
           <p class="guide-cta-period">One-Time Purchase</p>
           <p class="guide-cta-body">A precision diet built for your body — lose fat, keep muscle, no guesswork.</p>
-          <a class="btn-cta" href="https://gettheburnandbuildapp.com/createyourfoodplan/?browse=1">Create Your Diet &rarr;</a>
+          <a class="btn-cta" href="/questionnaire/#welcome">Create Your Diet &rarr;</a>
         </div>
         <div class="testi">
           <div class="guide-photo-label">
@@ -412,7 +427,7 @@
           <li>Lean Body Analysis</li>
           <li>Weekly Newsletter (optional)</li>
         </ul>
-        <a class="btn-cta" href="https://gettheburnandbuildapp.com/createyourfoodplan/?browse=1">Create Your Diet &rarr;</a>
+        <a class="btn-cta" href="/questionnaire/#welcome">Create Your Diet &rarr;</a>
       </div>
     </div>
   </section>
@@ -421,8 +436,8 @@
     <div class="footer-logo">Burn &amp; Build</div>
     <ul class="footer-links">
       <li><a href="/">Home</a></li>
-      <li><a href="/privacypolicy.html">Privacy Policy</a></li>
-      <li><a href="/support.html">Support</a></li>
+      <li><a href="/privacypolicy">Privacy Policy</a></li>
+      <li><a href="/support">Support</a></li>
     </ul>
     <p class="footer-copy">&copy; 2026 Burn &amp; Build. All rights reserved.</p>
   </footer>

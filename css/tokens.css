@@ -5,7 +5,7 @@
   --yellow: #FFCC00;
   --yellow-rgb: 255, 204, 0;
   --yellow-dim: #C99700;
-  /* Logo colors — match img/brand/bblogo.png (canonical logo asset) */
+  /* Logo colors — match img/brand/bblogo1.png */
   --logo-burn: #FDC500;
   --logo-build: #8A8A8A;
   --flame: var(--yellow);
@@ -23,7 +23,7 @@
   --gray-muted: #888888;
   --gray-light: #D4D4D4;
 
-  /* App semantics (creator + myplan) */
+  /* App semantics (desktop web) */
   --bg: var(--black);
   --card: var(--gray);
   --border: var(--gray-mid);

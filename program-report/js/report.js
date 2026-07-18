@@ -230,7 +230,7 @@ function renderWelcome(pkg) {
         <p>
           How we did it. We determined your lean weight using sophisticated body composition testing. Then you
           told us about your job, lifestyle, exercise and activities. With this information, the computer generated
-          this five-page report. Included is your ultrasound body composition report that I call your Lean Body
+          this five-page report. Included is your ultrasound body composition report that I call your Body Recomp
           Analysis, your body composition history and the last two pages are your custom designed diet.
         </p>
 

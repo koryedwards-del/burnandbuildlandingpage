@@ -221,7 +221,7 @@ export function analyzeLeanBodyMass({ gender, heightInches, leanBodyMass }) {
   if (!desirable) {
     return {
       atOrAbove: false,
-      message: 'Add your height to see lean body mass analysis.',
+      message: 'Add your height to see body recomp analysis.',
     };
   }
 

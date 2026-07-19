@@ -147,58 +147,59 @@
   height: 130px;
   object-fit: contain;
   display: block;
-  margin-bottom: 22px;
+  margin-bottom: 36px;
 }
 
 .back-url {
   font-weight: 800;
   font-size: 30px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: #FFCC00;
   text-transform: lowercase;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .back-cta {
-  font-weight: 800;
-  font-size: 52px;
-  letter-spacing: 0.02em;
+  font-weight: 900;
+  font-size: 56px;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
   color: #FFFFFF;
-  line-height: 1.05;
-  margin-bottom: 12px;
+  line-height: 1;
+  margin-bottom: 10px;
 }
 
 .back-price {
   font-weight: 700;
-  font-size: 22px;
-  letter-spacing: 0.1em;
+  font-size: 24px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8E8E8E;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .back-divider {
   width: 100%;
   max-width: 380px;
-  height: 2px;
-  background: #2A2A2A;
-  margin: 0 0 16px;
+  height: 1px;
+  background: #666666;
+  margin: 0 0 18px;
 }
 
 .back-name {
-  font-weight: 800;
-  font-size: 38px;
-  letter-spacing: 0.08em;
+  font-weight: 900;
+  font-size: 44px;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #FFFFFF;
-  margin-bottom: 10px;
+  line-height: 1.05;
+  margin-bottom: 6px;
 }
 
 .back-email {
   font-family: 'Barlow Condensed', sans-serif;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 24px;
   color: #8E8E8E;
   letter-spacing: 0.01em;
   text-transform: lowercase;

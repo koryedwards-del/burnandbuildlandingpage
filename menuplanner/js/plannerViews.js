@@ -880,7 +880,7 @@ function renderFoodFilterLabel() {
   const label = document.getElementById('food-filter-label');
   if (!label) return;
   if (state.foodBrowseMode === 'fruit') {
-    label.textContent = 'Snacks · tap fruit to fill grid';
+    label.textContent = 'Snacks · drag fruit onto grid';
     label.hidden = false;
     syncFoodSearchField();
     return;
@@ -984,6 +984,30 @@ function renderFoodStack() {
     return;
   }
 
+  if (state.foodBrowseMode === 'fruit') {
+    const fruitHint = '<p class="food-stack__hint">Drag fruit onto snack slots in the grid.</p>';
+    if (!list.length) {
+      const hint = state.foodSearchQuery.trim()
+        ? 'No foods match your search.'
+        : 'No foods in this category.';
+      container.innerHTML = fruitHint + `<p class="food-stack__hint">${hint}</p>`;
+      return;
+    }
+    container.innerHTML = fruitHint + list.map((food) => `
+    <div
+      class="card card--food"
+      draggable="true"
+      data-food-name="${food.name.replace(/"/g, '&quot;')}"
+    >
+      <p class="card__title">${escapeHtml(food.name)}</p>
+      <p class="card__detail">${foodCardDetail(food)}</p>
+    </div>
+  `).join('');
+
+    initFoodStackInteractions();
+    return;
+  }
+
   if (!list.length) {
     const hint = state.foodSearchQuery.trim()
       ? 'No foods match your search.'
@@ -1004,12 +1028,6 @@ function renderFoodStack() {
   `).join('');
 
   initFoodStackInteractions();
-}
-
-function addFoodToFruitSnack(foodName) {
-  if (state.foodBrowseMode !== 'fruit') return;
-  if (!state.activeMealSlot || !isSnackMealSlot(state.activeMealSlot)) return;
-  applyFruitToSnackCell(state.activeWeekDay, state.activeMealSlot, foodName);
 }
 
 function addFoodToMaker(foodName) {
@@ -1040,10 +1058,7 @@ function initFoodStackInteractions() {
 
     card.addEventListener('click', () => {
       if (dragged) return;
-      if (state.foodBrowseMode === 'fruit') {
-        addFoodToFruitSnack(card.dataset.foodName);
-        return;
-      }
+      if (state.foodBrowseMode === 'fruit') return;
       if (!state.activeMakerSlot) return;
       addFoodToMaker(card.dataset.foodName);
     });

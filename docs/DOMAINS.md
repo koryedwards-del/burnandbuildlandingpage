@@ -1,46 +1,59 @@
-# Burn & Build — domain coordination
+# Burn & Build — domain & repo map
 
-## Primary marketing site
+## Single source of truth
 
-**https://burnandbuilddiet.com** — this repo (`landing-burn-and-build`)
+**Repo:** `landing-burn-and-build`  
+**Site:** **https://burnandbuilddiet.com** (GitHub Pages, `CNAME`)
 
-All landing page edits happen here. Push to `main` deploys via GitHub Pages.
+This repo holds the **full desktop web product** from marketing through menu planner, plus the **API backend** deployed to Render.
 
-## App domain
+Push to `main` deploys the static site via GitHub Pages. The API deploys separately on Render (see below).
 
-**https://gettheburnandbuildapp.com** — `pwa-burn-and-build` (creator, myplan, API)
+## User flow (all on burnandbuilddiet.com)
+
+```
+Landing (/) → Questionnaire (/questionnaire/) → Checkout (/createyourfoodplan/)
+  → Program report (/program-report/) → Menu planner (page 4)
+```
+
+Return visits: `/menuplanner/` or `/program-report/?page=menuplanner` + email.
 
 | Path | Purpose |
 |------|---------|
-| `/` | Redirect to burnandbuilddiet.com (GoDaddy) |
-| `/createyourfoodplan/` | Program creator / checkout |
-| `/myplan/` | Daily app |
+| `/` | Marketing landing |
+| `/questionnaire/` | Intake wizard → Burn Engine builds program |
+| `/createyourfoodplan/` | Stripe checkout paywall |
+| `/program-report/` | Welcome, projections, servings, menu planner |
+| `/menuplanner/` | Redirect → program-report page 4 |
+| `/support`, `/privacypolicy` | Support & legal |
+| `/contacts/` | Admin contact list (key auth) |
 
-## GoDaddy setup (Kory)
+## API (Render)
 
-Redirect **gettheburnandbuildapp.com** → **burnandbuilddiet.com** for the marketing homepage only.
+**URL:** https://program-creator-3tzd.onrender.com  
+**Code:** `server/` in this repo  
+**Config:** `render.yaml`, `.env.example`
 
-**Important:** Do not redirect these app paths — they must keep working on gettheburnandbuildapp.com:
+Handles program save/load, Stripe checkout, webhooks, and admin contacts. The static site calls this API via `js/apiConfig.js`.
 
-- `gettheburnandbuildapp.com/createyourfoodplan/`
-- `gettheburnandbuildapp.com/myplan/`
-- `gettheburnandbuildapp.com/support`
-- `gettheburnandbuildapp.com/privacypolicy`
+### Render reconnect (required before deleting `pwa-burn-and-build`)
 
-If GoDaddy only offers a whole-domain forward, use **forwarding with path exceptions** or redirect only `www` + apex while leaving app paths on GitHub Pages. When unsure, forward only `gettheburnandbuildapp.com` (no path) and test creator links from the landing CTAs.
+The Render service currently deploys from the archived **`pwa-burn-and-build`** repo. Before deleting that repo:
 
-## CTAs on this site
-
-**Create Your Diet** buttons link to:
-
-`https://gettheburnandbuildapp.com/createyourfoodplan/?browse=1`
-
-That is correct — checkout runs on the app domain.
+1. Render Dashboard → **program-creator** service → Settings → connect **this repo** (`landing-burn-and-build`) instead.
+2. Confirm build command `npm install` and start command match `render.yaml`.
+3. Verify env vars are still set (`STRIPE_*`, `CONTACTS_ADMIN_KEY`, `DATABASE_PATH`, etc.).
+4. Smoke test: `/health`, questionnaire save, checkout, program-report load.
+5. Disable GitHub Pages on `pwa-burn-and-build` if still enabled (both repos had the same `CNAME`).
 
 ## Deprecated
 
-The duplicate landing in `pwa-burn-and-build/landing/` should not be the marketing source of truth once GoDaddy redirect is live. Long term, consider removing `landing/` from the PWA repo or replacing it with a redirect to burnandbuilddiet.com.
+| Item | Status |
+|------|--------|
+| **`pwa-burn-and-build` repo** | Archived — static UI already migrated here. Safe to delete **after** Render points at this repo. |
+| **`gettheburnandbuildapp.com`** | Legacy app domain — no longer used in code. Do not rely on it. |
+| **`/myplan/` phone PWA** | Removed from PWA repo; product is desktop-only. |
 
 ## Support email
 
-**support@burnandbuilddiet.com** on this site.
+**support@burnandbuilddiet.com**

@@ -743,6 +743,7 @@ function buildPrintStylesForView(view) {
       return buildShoppingPrintStyles();
     case 'foodlist':
       return buildFoodListPrintStyles();
+    case 'bestresults':
     case 'faq':
       return buildFaqPrintStyles();
     default:

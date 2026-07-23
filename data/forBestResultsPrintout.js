@@ -1,5 +1,5 @@
-/** Frequently Asked Questions — 2-page printout (handbook pages 12–17). */
-export const FAQ_PRINT_PAGES = [
+/** For Best Results — 2-page program tips printout. */
+export const FOR_BEST_RESULTS_PRINT_PAGES = [
   {
     page: 1,
     items: [
@@ -122,7 +122,7 @@ export const FAQ_PRINT_PAGES = [
       },
       {
         q: 'How do I print my plan materials?',
-        a: 'Open Print Shop from the menu planner to print your week at a glance, grocery list, food list, and this Frequently Asked Questions guide.',
+        a: 'Open Print Shop from the menu planner to print your week at a glance, grocery list, food list, For Best Results, and Frequently Asked Questions.',
       },
       {
         q: 'Who do I contact for help?',

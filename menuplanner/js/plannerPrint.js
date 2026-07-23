@@ -1,5 +1,6 @@
 import { ASSET_VERSION as FALLBACK_ASSET_VERSION } from '../../js/assetVersion.js';
-import { FAQ_PRINT_PAGES } from '../../data/faqPrintout.js';
+import { FOR_BEST_RESULTS_PRINT_PAGES } from '../../data/forBestResultsPrintout.js';
+import { HANDBOOK_FAQ_PRINT_PAGES } from '../../data/handbookFaqPrintout.js';
 import { buildPrintStylesForView } from './plannerPrintStyles.js';
 import {
   formatPrintDateTime,
@@ -355,9 +356,9 @@ function buildFoodListContent() {
   `;
 }
 
-function buildFaqContent() {
-  const headerHtml = buildAssistantHeaderHtml('Frequently Asked Questions', { showMeta: false });
-  return FAQ_PRINT_PAGES.map((page, index) => `
+function buildQaPrintContent(title, pages) {
+  const headerHtml = buildAssistantHeaderHtml(title, { showMeta: false });
+  return pages.map((page, index) => `
     <section class="faq-page${index > 0 ? ' faq-page--break' : ''}">
       ${headerHtml}
       ${page.items.map((item) => `
@@ -368,6 +369,14 @@ function buildFaqContent() {
       `).join('')}
     </section>
   `).join('');
+}
+
+function buildForBestResultsContent() {
+  return buildQaPrintContent('For Best Results', FOR_BEST_RESULTS_PRINT_PAGES);
+}
+
+function buildHandbookFaqContent() {
+  return buildQaPrintContent('Frequently Asked Questions', HANDBOOK_FAQ_PRINT_PAGES);
 }
 
 function buildShoppingListContent() {
@@ -433,9 +442,11 @@ function printDocumentTitle(view) {
     ? 'Grocery List'
     : view === 'foodlist'
       ? 'Food List'
-      : view === 'faq'
-        ? 'Frequently Asked Questions'
-        : 'Weekly';
+      : view === 'bestresults'
+        ? 'For Best Results'
+        : view === 'faq'
+          ? 'Frequently Asked Questions'
+          : 'Weekly';
   return `B&B- ${docName} - ${name}`;
 }
 
@@ -443,7 +454,8 @@ function buildPrintDocumentHtml(view = 'week') {
   const shoppingHtml = buildShoppingListContent();
   const weekHtml = buildWeekAgendaContent();
   const foodListHtml = buildFoodListContent();
-  const faqHtml = buildFaqContent();
+  const forBestResultsHtml = buildForBestResultsContent();
+  const handbookFaqHtml = buildHandbookFaqContent();
   const weekHeaderHtml = buildWeekPlanReportHeaderHtml();
   const shoppingHeaderHtml = buildAssistantHeaderHtml('Shopping List');
   const weekFooterHtml = `
@@ -465,10 +477,16 @@ function buildPrintDocumentHtml(view = 'week') {
         ${foodListHtml}
       </section>
     `
+      : view === 'bestresults'
+        ? `
+      <section class="assistant-panel">
+        ${forBestResultsHtml}
+      </section>
+    `
       : view === 'faq'
         ? `
       <section class="assistant-panel">
-        ${faqHtml}
+        ${handbookFaqHtml}
       </section>
     `
       : `
@@ -489,7 +507,7 @@ function buildPrintDocumentHtml(view = 'week') {
   <style>${buildPrintStylesForView(view)}</style>
 </head>
 <body>
-  ${view === 'week' || view === 'shopping' || view === 'faq' ? buildPrintWatermarkHtml({ repeat: true }) : ''}
+  ${view === 'week' || view === 'shopping' || view === 'bestresults' || view === 'faq' ? buildPrintWatermarkHtml({ repeat: true }) : ''}
   <article class="assistant-document">
     ${documentContent}
   </article>

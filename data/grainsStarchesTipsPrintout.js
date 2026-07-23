@@ -2,7 +2,7 @@
 export const GRAINS_STARCHES_TIPS_QA = [
   {
     q: 'How are grain and starch servings divided?',
-    a: 'Your program counts grains and starches together and divides them evenly across breakfast, lunch, and dinner for best results.',
+    a: 'Your program divides grain and starch servings evenly across breakfast, lunch, and dinner for best results.',
   },
   {
     q: 'Do I measure before or after cooking?',
@@ -10,11 +10,11 @@ export const GRAINS_STARCHES_TIPS_QA = [
   },
   {
     q: 'What kind of bread can I use?',
-    a: 'Any kind or brand works. One serving is 1 ounce (28 grams). Measure your slices — some run 1½ to 2 ounces. Donuts and muffins are not bread servings.',
+    a: "Any kind or brand works. Don't confuse muffins, croissants, and donuts for bread.",
   },
   {
     q: 'Can I count beans or rice as protein?',
-    a: 'Even though beans and rice contain protein, they are predominantly complex carbohydrates. Count them here as grains or starches.',
+    a: 'Even though beans and rice are predominantly complex carbohydrates, the protein they provide is additional protein. Count them here as grains or starches.',
   },
   {
     q: 'Why are potatoes and corn listed as starches?',

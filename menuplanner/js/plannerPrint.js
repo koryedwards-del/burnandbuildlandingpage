@@ -3,9 +3,13 @@ import { FOR_BEST_RESULTS_PRINT_PAGES } from '../../data/forBestResultsPrintout.
 import { HANDBOOK_FAQ_PRINT_PAGES } from '../../data/handbookFaqPrintout.js';
 import { buildPrintStylesForView } from './plannerPrintStyles.js';
 import {
-  formatPrintDateTime,
-  programClientName,
-} from '../../js/programBridgeUi.js';
+  PRINT_VIEW_CONFIG,
+  printDocumentTitle,
+  buildPrintHeaderHtml,
+  buildPrintPageShell,
+  buildPrintDocumentHtml as buildPrintShellDocumentHtml,
+} from './plannerPrintShell.js';
+import { programClientName } from '../../js/programBridgeUi.js';
 import {
   FOOD_CATEGORIES,
   SLOT_META,
@@ -185,33 +189,16 @@ function preloadPrintAssets() {
   img.src = printLogoHref();
 }
 
-function buildPrintWatermarkHtml({ repeat = false } = {}) {
-  const logoUrl = printLogoUrl();
-  const variantClass = repeat
-    ? 'assistant-doc-watermark assistant-doc-watermark--repeat'
-    : 'assistant-doc-watermark assistant-doc-watermark--page';
-  return `
-    <div class="${variantClass}" aria-hidden="true">
-      <img src="${logoUrl}" alt="" />
-    </div>
-  `;
+function printShellContext() {
+  return {
+    logoUrl: printLogoUrl(),
+    programPackage: state.programPackage,
+  };
 }
 
-function buildWeekPlanReportHeaderHtml() {
-  const name = escapeHtml(programClientName(state.programPackage));
-  const date = escapeHtml(formatPrintDateTime(new Date()));
-  const logoUrl = printLogoUrl();
-  return `
-    <header class="assistant-doc-header assistant-doc-header--report">
-      <img class="assistant-logo" src="${logoUrl}" alt="Burn &amp; Build" width="72" height="72" />
-      <div class="assistant-doc-titles">
-        <p class="assistant-doc-eyebrow">Personalized nutrition plan for</p>
-        <h1 class="assistant-doc-name">${name}</h1>
-        <p class="assistant-doc-guide">Burn &amp; Build Diet · Week Plan</p>
-        <p class="assistant-doc-date">${date}</p>
-      </div>
-    </header>
-  `;
+function buildViewHeaderHtml(view) {
+  const config = PRINT_VIEW_CONFIG[view] || PRINT_VIEW_CONFIG.week;
+  return buildPrintHeaderHtml(config.headerVariant, config.headerTitle, printShellContext());
 }
 
 function weekPlanHasContent() {
@@ -300,21 +287,22 @@ function buildFoodListRow({
   tips,
   hideMiddleTitle = false,
 }) {
-  return `
-    <div class="print-page print-page--sheet food-list-section">
-      ${buildPrintWatermarkHtml()}
-      ${headerHtml}
+  return buildPrintPageShell({
+    headerHtml,
+    bodyHtml: `
       <div class="food-list-columns">
         ${buildFoodListColumn(leftTitle, leftFoods)}
         ${buildFoodListColumn(middleTitle, middleFoods, { hideTitle: hideMiddleTitle })}
         ${buildFoodListTipsColumn(tipsTitle, tips)}
       </div>
-    </div>
-  `;
+    `,
+    sheet: true,
+    sectionClass: 'food-list-section',
+  });
 }
 
 function buildFoodListContent() {
-  const headerHtml = buildAssistantHeaderHtml('Food List', { showMeta: false });
+  const headerHtml = buildPrintHeaderHtml('generic', 'Food List', printShellContext());
   const [vegetablesLeft, vegetablesRight] = splitFoodsInHalf(foodsByCategory('vegetable'));
 
   return `
@@ -357,25 +345,32 @@ function buildFoodListContent() {
 }
 
 function buildQaPrintContent(title, pages, { numbered = false } = {}) {
-  const headerHtml = buildAssistantHeaderHtml(title, { showMeta: false });
+  const headerHtml = buildPrintHeaderHtml('generic', title, printShellContext());
   let questionNumber = 0;
-  return pages.map((page, index) => `
-    <section class="faq-page print-page print-page--sheet${index > 0 ? ' faq-page--break' : ''}">
-      ${headerHtml}
-      ${page.items.map((item) => {
-        questionNumber += 1;
-        const questionPrefix = numbered
-          ? `<span class="faq-question-num">${questionNumber}.</span> `
-          : '';
-        return `
-        <article class="faq-item">
-          <h2 class="faq-question">${questionPrefix}${escapeHtml(item.q)}</h2>
-          <p class="faq-answer">${escapeHtml(item.a)}</p>
-        </article>
-      `;
-      }).join('')}
-    </section>
-  `).join('');
+  return pages.map((page, index) => {
+    const bodyHtml = `
+      <div class="faq-page">
+        ${page.items.map((item) => {
+          questionNumber += 1;
+          const questionPrefix = numbered
+            ? `<span class="faq-question-num">${questionNumber}.</span> `
+            : '';
+          return `
+            <article class="faq-item">
+              <h2 class="faq-question">${questionPrefix}${escapeHtml(item.q)}</h2>
+              <p class="faq-answer">${escapeHtml(item.a)}</p>
+            </article>
+          `;
+        }).join('')}
+      </div>
+    `;
+    return buildPrintPageShell({
+      headerHtml,
+      bodyHtml,
+      breakBefore: index > 0,
+      sheet: true,
+    });
+  }).join('');
 }
 
 function buildForBestResultsContent() {
@@ -427,101 +422,46 @@ function buildShoppingListContent() {
   `).join('');
 }
 
-function buildAssistantHeaderHtml(title, { showMeta = true } = {}) {
-  const name = escapeHtml(programClientName(state.programPackage));
-  const date = escapeHtml(formatPrintDateTime(new Date()));
-  const logoUrl = printLogoUrl();
-  return `
-    <header class="assistant-doc-header">
-      <img class="assistant-logo" src="${logoUrl}" alt="Burn &amp; Build" width="72" height="72" />
-      <div class="assistant-doc-titles">
-        <p class="assistant-doc-brand">Burn &amp; Build Diet</p>
-        <h1 class="assistant-doc-title">${escapeHtml(title)}</h1>
-        ${showMeta ? `<p class="assistant-doc-meta">Prepared for ${name} · ${date}</p>` : ''}
-      </div>
-    </header>
-  `;
-}
-
-function printDocumentTitle(view) {
-  const name = programClientName(state.programPackage);
-  const docName = view === 'shopping'
-    ? 'Grocery List'
-    : view === 'foodlist'
-      ? 'Food List'
-      : view === 'bestresults'
-        ? 'For Best Results'
-        : view === 'faq'
-          ? 'Frequently Asked Questions'
-          : 'Weekly';
-  return `B&B- ${docName} - ${name}`;
-}
-
 function buildPrintDocumentHtml(view = 'week') {
-  const shoppingHtml = buildShoppingListContent();
-  const weekHtml = buildWeekAgendaContent();
-  const foodListHtml = buildFoodListContent();
-  const forBestResultsHtml = buildForBestResultsContent();
-  const handbookFaqHtml = buildHandbookFaqContent();
-  const weekHeaderHtml = buildWeekPlanReportHeaderHtml();
-  const shoppingHeaderHtml = buildAssistantHeaderHtml('Shopping List');
-  const weekFooterHtml = `
-    <footer class="assistant-doc-footer">
-      <span>Burn &amp; Build Diet</span>
-      <span>Week Plan · ${escapeHtml(programClientName(state.programPackage))}</span>
-    </footer>
-  `;
-  const documentContent = view === 'shopping'
-    ? `
-      <section class="assistant-panel print-page print-page--sheet">
-        ${shoppingHeaderHtml}
-        ${shoppingHtml}
-      </section>
-    `
-    : view === 'foodlist'
-      ? `
-      <section class="assistant-panel">
-        ${foodListHtml}
-      </section>
-    `
-      : view === 'bestresults'
-        ? `
-      <section class="assistant-panel">
-        ${forBestResultsHtml}
-      </section>
-    `
-      : view === 'faq'
-        ? `
-      <section class="assistant-panel">
-        ${handbookFaqHtml}
-      </section>
-    `
-      : `
-      <section class="assistant-panel print-page print-page--flow">
-        ${weekHeaderHtml}
-        ${weekHtml}
-        ${weekFooterHtml}
-      </section>
+  const title = printDocumentTitle(view, state.programPackage);
+  const logoUrl = printLogoUrl();
+  const styles = buildPrintStylesForView(view);
+  const headerHtml = buildViewHeaderHtml(view);
+  const name = escapeHtml(programClientName(state.programPackage));
+
+  let bodyHtml = '';
+  if (view === 'shopping') {
+    bodyHtml = buildPrintPageShell({
+      headerHtml,
+      bodyHtml: buildShoppingListContent(),
+      sheet: true,
+    });
+  } else if (view === 'foodlist') {
+    bodyHtml = buildFoodListContent();
+  } else if (view === 'bestresults') {
+    bodyHtml = buildForBestResultsContent();
+  } else if (view === 'faq') {
+    bodyHtml = buildHandbookFaqContent();
+  } else {
+    const weekFooterHtml = `
+      <footer class="print-doc-footer">
+        <span>Burn &amp; Build Diet</span>
+        <span>Week Plan · ${name}</span>
+      </footer>
     `;
+    bodyHtml = buildPrintPageShell({
+      headerHtml,
+      bodyHtml: `${buildWeekAgendaContent()}${weekFooterHtml}`,
+    });
+  }
 
-  const useDocumentWatermark = view !== 'foodlist';
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>${escapeHtml(printDocumentTitle(view))}</title>
-  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <style>${buildPrintStylesForView(view)}</style>
-</head>
-<body>
-  <article class="assistant-document">
-    ${useDocumentWatermark ? buildPrintWatermarkHtml({ repeat: true }) : ''}
-    ${documentContent}
-  </article>
-</body>
-</html>`;
+  return buildPrintShellDocumentHtml({
+    view,
+    title,
+    logoUrl,
+    styles,
+    bodyHtml,
+  });
 }
 
 let printFrame = null;

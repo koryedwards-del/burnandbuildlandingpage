@@ -18,6 +18,6 @@ export const GRAINS_STARCHES_TIPS_QA = [
   },
   {
     q: 'Why are potatoes and corn listed as starches?',
-    a: 'Potatoes, corn, peas, beans, and squash count as starches on this list. Vegetables are a separate group with their own servings.',
+    a: 'Starch and vegetable servings are measured differently — a potato serving is not the same as a broccoli serving. People often pair potatoes with vegetables like broccoli or Brussels sprouts; keeping them separate keeps portions manageable.',
   },
 ];

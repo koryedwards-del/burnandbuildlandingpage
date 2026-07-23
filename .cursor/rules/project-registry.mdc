@@ -38,7 +38,7 @@ Five print documents, **two header templates**:
 
 | Document | Data |
 |----------|------|
-| Food list | Column layout + tips Q&A in `data/*TipsPrintout.js`; food names from program |
+| Food list | `data/foodListPrintout.js` + tips Q&A in `data/*TipsPrintout.js`; food names from program |
 | For Best Results | `data/forBestResultsPrintout.js` |
 | FAQ | `data/handbookFaqPrintout.js` |
 

@@ -24,6 +24,7 @@ export const PRINT_SHEET_MIN_HEIGHT = {
  *   personalized — logo + title + prepared-for line (weekly, grocery)
  *
  * Generic docs: static copy + exact pagination in data/*Printout.js
+ * Rendered by genericPrintEngine.js (fixed-size sheets, not browser flow).
  *
  * watermarkMode:
  *   sheet — one printed page per shell; watermark embedded in each page

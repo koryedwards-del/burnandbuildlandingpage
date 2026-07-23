@@ -1,11 +1,17 @@
 import { ASSET_VERSION as FALLBACK_ASSET_VERSION } from '../../js/assetVersion.js';
 import { FOR_BEST_RESULTS_PRINT_PAGES } from '../../data/forBestResultsPrintout.js';
 import { HANDBOOK_FAQ_PRINT_PAGES } from '../../data/handbookFaqPrintout.js';
+import { FOOD_LIST_PRINT_PAGES } from '../../data/foodListPrintout.js';
 import { PROTEIN_TIPS_QA } from '../../data/proteinTipsPrintout.js';
 import { GRAINS_STARCHES_TIPS_QA } from '../../data/grainsStarchesTipsPrintout.js';
 import { VEGETABLE_TIPS_QA } from '../../data/vegetableTipsPrintout.js';
 import { FRUIT_TIPS_QA } from '../../data/fruitTipsPrintout.js';
 import { buildPrintStylesForView } from './plannerPrintStyles.js';
+import {
+  buildGenericPrintDocumentHtml,
+  buildGenericPrintSheet,
+  isGenericPrintView,
+} from './genericPrintEngine.js';
 import {
   printDocumentTitle,
   buildPrintViewHeaderHtml,
@@ -209,6 +215,20 @@ function splitFoodsInHalf(foods) {
   return [foods.slice(0, splitAt), foods.slice(splitAt)];
 }
 
+const FOOD_LIST_TIPS_BY_KEY = {
+  protein: PROTEIN_TIPS_QA,
+  grainsStarches: GRAINS_STARCHES_TIPS_QA,
+  vegetable: VEGETABLE_TIPS_QA,
+  fruit: FRUIT_TIPS_QA,
+};
+
+function foodsForFoodListColumn(columnDef) {
+  const foods = foodsByCategory(columnDef.category);
+  if (columnDef.split === 'first') return splitFoodsInHalf(foods)[0];
+  if (columnDef.split === 'second') return splitFoodsInHalf(foods)[1];
+  return foods;
+}
+
 function foodsByCategory(categoryId) {
   return state.foods
     .filter((food) => food.category === categoryId)
@@ -255,77 +275,55 @@ function buildFoodListTipsColumn(title, { tips = [], qaItems = [] } = {}) {
 
 function buildFoodListRow({
   headerHtml,
-  leftTitle,
-  leftFoods,
-  middleTitle = '',
-  middleFoods = [],
-  tipsTitle,
-  tips = [],
-  qaItems = [],
-  hideMiddleTitle = false,
+  columns,
+  columnCount = 3,
+  pageIndex = 0,
+  isLast = false,
 }) {
-  return buildPrintPageShell({
+  const colsHtml = columns.map((columnDef) => {
+    if (columnDef.kind === 'tips') {
+      return buildFoodListTipsColumn(columnDef.title, {
+        qaItems: FOOD_LIST_TIPS_BY_KEY[columnDef.qaKey] || [],
+      });
+    }
+    return buildFoodListColumn(columnDef.title, foodsForFoodListColumn(columnDef), {
+      hideTitle: columnDef.hideTitle,
+    });
+  }).join('');
+
+  return buildGenericPrintSheet({
+    orientation: 'landscape',
     headerHtml,
     logoUrl: printLogoUrl(),
+    pageIndex,
+    isLast,
     bodyHtml: `
-      <div class="food-list-columns">
-        ${buildFoodListColumn(leftTitle, leftFoods)}
-        ${buildFoodListColumn(middleTitle, middleFoods, { hideTitle: hideMiddleTitle })}
-        ${buildFoodListTipsColumn(tipsTitle, { tips, qaItems })}
+      <div class="food-list-columns food-list-columns--cols-${columnCount}">
+        ${colsHtml}
       </div>
     `,
-    sheet: true,
     sectionClass: 'food-list-section',
   });
 }
 
 function buildFoodListContent() {
   const headerHtml = buildPrintViewHeaderHtml('foodlist', printShellContext());
-  const [vegetablesLeft, vegetablesRight] = splitFoodsInHalf(foodsByCategory('vegetable'));
+  const pages = FOOD_LIST_PRINT_PAGES;
 
-  return `
-    ${buildFoodListRow({
-      headerHtml,
-      leftTitle: 'Protein',
-      leftFoods: foodsByCategory('protein'),
-      middleTitle: 'Dairy',
-      middleFoods: foodsByCategory('dairy'),
-      tipsTitle: 'Protein Tips',
-      qaItems: PROTEIN_TIPS_QA,
-    })}
-    ${buildFoodListRow({
-      headerHtml,
-      leftTitle: 'Grains',
-      leftFoods: foodsByCategory('grain'),
-      middleTitle: 'Starches',
-      middleFoods: foodsByCategory('starch'),
-      tipsTitle: 'Grains & Starches Tips',
-      qaItems: GRAINS_STARCHES_TIPS_QA,
-    })}
-    ${buildFoodListRow({
-      headerHtml,
-      leftTitle: 'Vegetables',
-      leftFoods: vegetablesLeft,
-      middleTitle: 'Vegetables',
-      middleFoods: vegetablesRight,
-      hideMiddleTitle: true,
-      tipsTitle: 'Vegetable Tips',
-      qaItems: VEGETABLE_TIPS_QA,
-    })}
-    ${buildFoodListRow({
-      headerHtml,
-      leftTitle: 'Fruit',
-      leftFoods: foodsByCategory('fruit'),
-      tipsTitle: 'Fruit Tips',
-      qaItems: FRUIT_TIPS_QA,
-    })}
-  `;
+  return pages.map((pageDef, index) => buildFoodListRow({
+    headerHtml,
+    columns: pageDef.columns,
+    columnCount: pageDef.columnCount || pageDef.columns.length,
+    pageIndex: index,
+    isLast: index === pages.length - 1,
+  })).join('');
 }
 
 function buildQaPrintContent(view, pages, { numbered = false, variant = 'faq' } = {}) {
   const headerHtml = buildPrintViewHeaderHtml(view, printShellContext());
-  const sheet = PRINT_VIEW_CONFIG[view]?.watermarkMode === 'sheet';
+  const orientation = PRINT_VIEW_CONFIG[view]?.pageSize === 'landscape' ? 'landscape' : 'portrait';
   let questionNumber = 0;
+
   return pages.map((page, index) => {
     const bodyHtml = variant === 'newspaper'
       ? `
@@ -358,12 +356,14 @@ function buildQaPrintContent(view, pages, { numbered = false, variant = 'faq' } 
           }).join('')}
         </div>
       `;
-    return buildPrintPageShell({
+
+    return buildGenericPrintSheet({
+      orientation,
       headerHtml,
       logoUrl: printLogoUrl(),
       bodyHtml,
-      breakBefore: index > 0,
-      sheet,
+      pageIndex: index,
+      isLast: index === pages.length - 1,
     });
   }).join('');
 }
@@ -430,15 +430,19 @@ function buildPrintDocumentHtml(view = 'week') {
   const styles = buildPrintStylesForView(view);
   const buildBody = PRINT_BODY_BUILDERS[view] || PRINT_BODY_BUILDERS.week;
 
-  let bodyHtml = '';
-  if (view === 'week' || view === 'shopping') {
-    bodyHtml = buildPrintPageShell({
-      headerHtml: buildPrintViewHeaderHtml(view, printShellContext()),
-      bodyHtml: buildBody(),
+  if (isGenericPrintView(view)) {
+    return buildGenericPrintDocumentHtml({
+      view,
+      title,
+      styles,
+      sheetsHtml: buildBody(),
     });
-  } else {
-    bodyHtml = buildBody();
   }
+
+  const bodyHtml = buildPrintPageShell({
+    headerHtml: buildPrintViewHeaderHtml(view, printShellContext()),
+    bodyHtml: buildBody(),
+  });
 
   return buildPrintShellDocumentHtml({
     view,
@@ -451,21 +455,17 @@ function buildPrintDocumentHtml(view = 'week') {
 
 let printFrame = null;
 
-function triggerFramePrint(frameWin, frameDoc) {
-  frameWin.focus();
+function triggerDocumentPrint(targetWin, targetDoc) {
+  targetWin.focus();
   try {
-    if (frameDoc.execCommand && frameDoc.execCommand('print', false, null)) return;
+    if (targetDoc.execCommand && targetDoc.execCommand('print', false, null)) return;
   } catch (_) {
     /* fall through to window.print */
   }
-  frameWin.print();
+  targetWin.print();
 }
 
-function printPlannerDocument(view) {
-  persistPlannerToProgram({ immediate: true });
-
-  // Fresh iframe each print — Safari reuses stale frames and adds a second
-  // "This webpage is trying to print" confirmation on repeat attempts.
+function printViaIframe(html) {
   printFrame?.remove();
   printFrame = document.createElement('iframe');
   printFrame.setAttribute('aria-hidden', 'true');
@@ -482,12 +482,34 @@ function printPlannerDocument(view) {
   const frameWin = printFrame.contentWindow;
   const frameDoc = frameWin.document;
   frameDoc.open();
-  frameDoc.write(buildPrintDocumentHtml(view));
+  frameDoc.write(html);
   frameDoc.close();
+  triggerDocumentPrint(frameWin, frameDoc);
+}
 
-  // Must run in the same turn as the button click. Deferred print() loses the
-  // user gesture and iOS Safari shows an extra "trying to print" prompt.
-  triggerFramePrint(frameWin, frameDoc);
+function printGenericDocument(html) {
+  const printWin = window.open('', '_blank');
+  if (!printWin) {
+    printViaIframe(html);
+    return;
+  }
+
+  printWin.document.open();
+  printWin.document.write(html);
+  printWin.document.close();
+  triggerDocumentPrint(printWin, printWin.document);
+}
+
+function printPlannerDocument(view) {
+  persistPlannerToProgram({ immediate: true });
+  const html = buildPrintDocumentHtml(view);
+
+  if (isGenericPrintView(view)) {
+    printGenericDocument(html);
+    return;
+  }
+
+  printViaIframe(html);
 }
 
 function showPlannerToast(message, { variant = 'info', durationMs = 6000 } = {}) {

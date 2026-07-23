@@ -10,7 +10,7 @@ export const VEGETABLE_TIPS_QA = [
   },
   {
     q: 'Can I use fresh, frozen, or canned vegetables?',
-    a: 'Yes. Fresh, frozen, and canned all count.',
+    a: 'Yes.',
   },
   {
     q: 'Why are potatoes and corn not on this list?',

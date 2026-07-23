@@ -14,6 +14,6 @@ export const FRUIT_TIPS_QA = [
   },
   {
     q: 'Are dried fruit and juice on this list?',
-    a: 'Dried fruit and juices have not proven to add fat loss while preserving muscle. So the answer is no.',
+    a: "Dried fruit can lead to overeating because it's dehydrated. Fruit juice can easily be stored as fat.",
   },
 ];

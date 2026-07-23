@@ -17,7 +17,7 @@ export const PROTEIN_TIPS_QA = [
     a: "That's a personal choice. Many people skip dairy today. Replace those servings with other protein foods on this list — meats, fish, and egg whites.",
   },
   {
-    q: "Why isn't salmon on this list?",
-    a: 'Stick to the lean fish on this list during fat loss. Salmon and other higher-fat fish are better choices for maintenance.',
+    q: 'Can I have salmon?',
+    a: 'Stick to the lean fish on this list.',
   },
 ];

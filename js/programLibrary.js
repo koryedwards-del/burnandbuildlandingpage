@@ -100,10 +100,12 @@ function removeDietPlansFromNav() {
 function libraryGroupHtml(programRowsHtml = '') {
   return `
     <li class="pb-nav__item pb-nav__group pb-nav__group--diet-plans">
-      <span class="pb-nav__btn pb-nav__btn--group-head">Your diet plans</span>
-      <ul class="pb-nav__group-list pb-nav__group-list--diet-plans">
-        ${programRowsHtml}
-      </ul>
+      <div class="pb-nav__diet-panel">
+        <span class="pb-nav__btn pb-nav__btn--group-head">Your diet plans</span>
+        <ul class="pb-nav__group-list pb-nav__group-list--diet-plans">
+          ${programRowsHtml}
+        </ul>
+      </div>
     </li>`;
 }
 

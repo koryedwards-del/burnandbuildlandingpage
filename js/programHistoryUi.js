@@ -20,13 +20,13 @@ export function renderSidebarProgramCard(row, { isActive = false, isOpening = fa
     <li class="pb-nav__item pb-nav__item--nested${isActive ? ' pb-nav__item--active-plan' : ''}">
       <button
         type="button"
-        class="pb-nav__btn pb-nav__btn--aux pb-nav__btn--nested${isOpening ? ' is-opening' : ''}${isActive ? ' is-active' : ''}"
+        class="pb-nav__btn pb-nav__btn--nested pb-nav__btn--diet-row${isOpening ? ' is-opening' : ''}${isActive ? ' is-active' : ''}"
         data-switch-program="${row.id}"
         aria-label="Switch to diet from ${row.testDateDisplay}${isActive ? ' (active)' : ''}"${aria}
         ${isActive ? ' disabled' : ''}
       >
         <span class="pb-nav__btn-line">${row.testDateDisplay}</span>
-        ${isActive ? '<span class="pb-nav__btn-sub">Active</span>' : ''}
+        ${isActive ? '<span class="pb-nav__btn-badge">Active</span>' : ''}
       </button>
     </li>`;
 }

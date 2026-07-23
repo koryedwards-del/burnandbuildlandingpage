@@ -297,6 +297,7 @@ function buildFoodListRow({
 }) {
   return `
     <div class="print-page food-list-section">
+      ${buildPrintWatermarkHtml()}
       ${headerHtml}
       <div class="food-list-columns">
         ${buildFoodListColumn(leftTitle, leftFoods)}
@@ -537,8 +538,20 @@ function buildPrintDocumentHtml(view = 'week') {
       left: 50%;
       transform: translate(-50%, -50%);
     }
-    body.view-foodlist .assistant-panel,
-    body.view-foodlist .print-page {
+    body.view-foodlist .food-list-section {
+      position: relative;
+      z-index: 1;
+    }
+    body.view-foodlist .food-list-section > .assistant-doc-watermark {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 0;
+    }
+    body.view-foodlist .food-list-section > .assistant-doc-header,
+    body.view-foodlist .food-list-section > .food-list-columns {
       position: relative;
       z-index: 1;
     }
@@ -964,11 +977,23 @@ function buildPrintDocumentHtml(view = 'week') {
     }
     @media print {
       body { background: #fff; }
-      body.view-foodlist .assistant-document > .assistant-doc-watermark {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+      body.view-foodlist .food-list-section {
+        min-height: 7.5in;
+        box-sizing: border-box;
+        position: relative;
+        break-before: page;
+        page-break-before: always;
+      }
+      body.view-foodlist .food-list-section:first-child {
+        break-before: auto;
+        page-break-before: auto;
+      }
+      body.view-foodlist .food-list-section > .assistant-doc-watermark {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .assistant-document {
         padding: 0;
@@ -1027,7 +1052,7 @@ function buildPrintDocumentHtml(view = 'week') {
 </head>
 <body class="${bodyClass}">
   <article class="assistant-document">
-    ${view === 'week' || view === 'shopping' || view === 'foodlist' ? buildPrintWatermarkHtml() : ''}
+    ${view === 'week' || view === 'shopping' ? buildPrintWatermarkHtml() : ''}
     ${documentContent}
   </article>
 </body>

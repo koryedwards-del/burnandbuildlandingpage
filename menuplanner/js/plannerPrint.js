@@ -2,6 +2,7 @@ import { ASSET_VERSION as FALLBACK_ASSET_VERSION } from '../../js/assetVersion.j
 import { FOR_BEST_RESULTS_PRINT_PAGES } from '../../data/forBestResultsPrintout.js';
 import { HANDBOOK_FAQ_PRINT_PAGES } from '../../data/handbookFaqPrintout.js';
 import { PROTEIN_TIPS_QA } from '../../data/proteinTipsPrintout.js';
+import { GRAINS_STARCHES_TIPS_QA } from '../../data/grainsStarchesTipsPrintout.js';
 import { buildPrintStylesForView } from './plannerPrintStyles.js';
 import {
   printDocumentTitle,
@@ -200,13 +201,6 @@ function weekPlanHasContent() {
   return found;
 }
 
-const GRAINS_STARCHES_TIPS = [
-  'Your daily grain and starch servings are counted together. The Burn & Build Diet divides them fairly even among breakfast, lunch, and dinner.',
-  'Grains include bread, cereal, rice, pasta, and similar foods. Starches include potatoes, corn, peas, beans, and squash.',
-  'Choose whole-grain products when possible. Avoid added fats, sugars, and heavy sauces on grain and starch foods.',
-  'Measure your serving size after cooking.',
-];
-
 const VEGETABLE_TIPS = [
   'Vegetable servings are eaten at dinner on the Burn & Build Diet. Choose a variety of colorful vegetables throughout the week.',
   'Fresh, frozen, and canned vegetables without added fat or sugar all count toward your servings.',
@@ -316,7 +310,7 @@ function buildFoodListContent() {
       middleTitle: 'Starches',
       middleFoods: foodsByCategory('starch'),
       tipsTitle: 'Grains & Starches Tips',
-      tips: GRAINS_STARCHES_TIPS,
+      qaItems: GRAINS_STARCHES_TIPS_QA,
     })}
     ${buildFoodListRow({
       headerHtml,

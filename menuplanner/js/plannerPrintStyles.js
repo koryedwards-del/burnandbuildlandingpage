@@ -10,15 +10,34 @@ function buildWeekPrintStyles() {
       color: #111111;
       margin: 0;
     }
+    .assistant-doc-watermark {
+      z-index: 0;
+      pointer-events: none;
+    }
+    .assistant-doc-watermark img {
+      width: 240px;
+      height: auto;
+      opacity: 0.06;
+    }
+    .assistant-doc-watermark--repeat {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .assistant-document {
       background: #ffffff;
       color: #111111;
       margin: 0 auto;
       padding: 36px 44px 52px;
       max-width: none;
+      position: relative;
+      z-index: 1;
     }
     .assistant-panel {
       position: relative;
+      z-index: 1;
     }
     .assistant-doc-header {
       display: flex;
@@ -201,6 +220,13 @@ function buildWeekPrintStyles() {
     }
     @media print {
       body { background: #fff; }
+      .assistant-doc-watermark--repeat {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       .assistant-document {
         padding: 0;
         margin: 0;

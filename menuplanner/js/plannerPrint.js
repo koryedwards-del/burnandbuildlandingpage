@@ -184,10 +184,13 @@ function preloadPrintAssets() {
   img.src = printLogoHref();
 }
 
-function buildPrintWatermarkHtml() {
+function buildPrintWatermarkHtml({ repeat = false } = {}) {
   const logoUrl = printLogoUrl();
+  const variantClass = repeat
+    ? 'assistant-doc-watermark assistant-doc-watermark--repeat'
+    : 'assistant-doc-watermark assistant-doc-watermark--page';
   return `
-    <div class="assistant-doc-watermark assistant-doc-watermark--page" aria-hidden="true">
+    <div class="${variantClass}" aria-hidden="true">
       <img src="${logoUrl}" alt="" />
     </div>
   `;
@@ -487,6 +490,7 @@ function buildPrintDocumentHtml(view = 'week') {
   <style>${buildPrintStylesForView(view)}</style>
 </head>
 <body>
+  ${view === 'week' ? buildPrintWatermarkHtml({ repeat: true }) : ''}
   <article class="assistant-document">
     ${documentContent}
   </article>

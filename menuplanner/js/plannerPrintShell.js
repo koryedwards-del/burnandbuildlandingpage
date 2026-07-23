@@ -102,7 +102,6 @@ export function buildPrintPageShell({
   breakBefore = false,
   sheet = false,
   sectionClass = '',
-  logoUrl = '',
 } = {}) {
   const classes = [
     'print-page',
@@ -110,11 +109,9 @@ export function buildPrintPageShell({
     sheet ? 'print-page--sheet' : '',
     breakBefore ? 'print-page--break' : '',
   ].filter(Boolean).join(' ');
-  const watermarkHtml = logoUrl ? buildPrintWatermarkHtml(logoUrl) : '';
 
   return `
     <section class="${classes}">
-      ${watermarkHtml}
       ${headerHtml}
       ${bodyHtml}
     </section>
@@ -138,6 +135,7 @@ export function buildPrintDocumentHtml({
   <style>${styles}</style>
 </head>
 <body class="print-body print-body--${view}">
+  ${buildPrintWatermarkHtml(logoUrl)}
   <article class="print-document">
     ${bodyHtml}
   </article>

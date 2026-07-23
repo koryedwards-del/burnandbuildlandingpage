@@ -17,13 +17,8 @@ const PRINT_SHELL_STYLES = `
     position: relative;
   }
   .print-watermark {
-    z-index: 0;
+    display: none;
     pointer-events: none;
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   .print-watermark img {
     width: 240px;
@@ -47,11 +42,6 @@ const PRINT_SHELL_STYLES = `
   .print-page--sheet + .print-page--sheet {
     break-before: page;
     page-break-before: always;
-  }
-  .print-header,
-  .print-page > *:not(.print-watermark) {
-    position: relative;
-    z-index: 1;
   }
   .print-header {
     display: flex;
@@ -118,15 +108,13 @@ const PRINT_SHELL_STYLES = `
       width: 72px;
     }
     .print-watermark {
-      position: absolute;
-      inset: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .print-page:not(.print-page--sheet) .print-watermark {
       position: fixed;
       inset: 0;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      pointer-events: none;
     }
     .print-body--foodlist .print-page--sheet {
       min-height: ${PRINT_SHEET_MIN_HEIGHT.landscape};

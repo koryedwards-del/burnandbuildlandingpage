@@ -274,7 +274,6 @@ function buildFoodListRow({
     `,
     sheet: true,
     sectionClass: 'food-list-section',
-    logoUrl: printLogoUrl(),
   });
 }
 
@@ -362,7 +361,6 @@ function buildQaPrintContent(view, pages, { numbered = false, variant = 'faq' } 
       bodyHtml,
       breakBefore: index > 0,
       sheet,
-      logoUrl: printLogoUrl(),
     });
   }).join('');
 }
@@ -436,7 +434,6 @@ function buildPrintDocumentHtml(view = 'week') {
     bodyHtml = buildPrintPageShell({
       headerHtml: buildPrintViewHeaderHtml(view, printShellContext()),
       bodyHtml: buildBody(),
-      logoUrl: printLogoUrl(),
     });
   } else {
     bodyHtml = buildBody();

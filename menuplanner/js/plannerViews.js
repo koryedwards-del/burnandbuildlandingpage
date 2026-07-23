@@ -1,8 +1,4 @@
 import {
-  programClientName,
-  programMetaHtml,
-} from '../../js/programBridgeUi.js';
-import {
   FOOD_CATEGORIES,
   SLOT_META,
   FAT_LANE_SLOT_LABELS,
@@ -55,11 +51,12 @@ import {
 } from './plannerState.js';
 
 function renderPlannerMeta() {
-  const meta = document.getElementById('planner-meta');
+  const meta = document.getElementById('planner-servings');
   if (!meta) return;
 
   if (!state.programPackage?.intake) {
-    meta.innerHTML = '';
+    meta.hidden = true;
+    meta.textContent = '';
     return;
   }
 
@@ -68,9 +65,14 @@ function renderPlannerMeta() {
     ? `Protein ${fmtServings(servings.protein)}, G/S ${fmtServings(servings.grainsStarches)}, Fruit ${fmtServings(servings.fruits)}, Veg ${fmtServings(servings.vegetables)}, Fat pts ${fmtServings(servings.fatMaintain)}`
     : '';
 
-  meta.innerHTML = `
-    ${programMetaHtml(state.programPackage)}
-    ${servingsLine ? `<p class="pb-servings-note">${escapeHtml(programClientName(state.programPackage))} — ${escapeHtml(servingsLine)}</p>` : ''}`;
+  if (!servingsLine) {
+    meta.hidden = true;
+    meta.textContent = '';
+    return;
+  }
+
+  meta.textContent = servingsLine;
+  meta.hidden = false;
 }
 
 function refreshFoodsPanel() {

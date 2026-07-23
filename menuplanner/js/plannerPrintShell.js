@@ -78,7 +78,7 @@ export function buildPrintHeaderHtml(variant, title, { logoUrl, programPackage }
     : '';
 
   return `
-    <header class="print-header${variant === 'personalized' ? ' print-header--personalized' : ''}">
+    <header class="print-header print-header--${variant}">
       <img class="print-logo" src="${logoUrl}" alt="Burn &amp; Build" width="72" height="72" />
       <div class="print-header-text">
         ${brandLine}

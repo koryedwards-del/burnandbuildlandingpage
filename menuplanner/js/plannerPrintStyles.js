@@ -58,11 +58,13 @@ const PRINT_SHELL_BASE = `
     height: auto;
     flex-shrink: 0;
   }
-  .print-header--personalized {
+  .print-header--personalized,
+  .print-header--generic {
     margin-bottom: 14px;
     padding-bottom: 12px;
   }
-  .print-header--personalized .print-header-title {
+  .print-header--personalized .print-header-title,
+  .print-header--generic .print-header-title {
     margin-bottom: 4px;
   }
   .print-header-brand {
@@ -306,21 +308,7 @@ const SHOPPING_CONTENT_STYLES = `
 
 const FOODLIST_CONTENT_STYLES = `
   .print-body--foodlist .print-document {
-    padding: 18px 24px 16px;
-  }
-  .print-body--foodlist .print-header {
-    gap: 14px;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-  }
-  .print-body--foodlist .print-logo { width: 48px; }
-  .print-body--foodlist .print-header-brand {
-    font-size: 0.58rem;
-    margin-bottom: 2px;
-  }
-  .print-body--foodlist .print-header-title {
-    font-size: 1.35rem;
-    margin-bottom: 2px;
+    padding: 36px 44px 36px;
   }
   .food-list-section + .food-list-section {
     margin-top: 18px;
@@ -379,7 +367,6 @@ const FOODLIST_CONTENT_STYLES = `
       box-sizing: border-box;
       position: relative;
     }
-    .print-body--foodlist .print-logo { width: 44px; }
     .food-list-col-title { margin-bottom: 6px; }
     .print-page + .print-page,
     .food-list-section + .food-list-section {
@@ -393,21 +380,7 @@ const FOODLIST_CONTENT_STYLES = `
 const QA_CONTENT_STYLES = `
   .print-body--bestresults .print-document,
   .print-body--faq .print-document {
-    padding: 18px 24px 20px;
-  }
-  .print-content--qa .print-header {
-    gap: 12px;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-  }
-  .print-content--qa .print-logo { width: 44px; }
-  .print-content--qa .print-header-brand {
-    font-size: 0.56rem;
-    margin-bottom: 2px;
-  }
-  .print-content--qa .print-header-title {
-    font-size: 1.2rem;
-    margin-bottom: 0;
+    padding: 36px 44px 36px;
   }
   .faq-page {
     display: flex;
@@ -432,12 +405,6 @@ const QA_CONTENT_STYLES = `
     color: #333;
   }
   @media print {
-    .print-content--qa .print-header {
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-    }
-    .print-content--qa .print-logo { width: 36px; }
-    .print-content--qa .print-header-title { font-size: 1.05rem; }
     .faq-page { gap: 3px; }
     .faq-question { font-size: 0.6rem; margin-bottom: 0; }
     .faq-answer { font-size: 0.56rem; line-height: 1.28; }

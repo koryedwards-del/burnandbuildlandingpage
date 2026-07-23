@@ -1,6 +1,116 @@
-/** Print Shop styles — one shell template + content-only extensions. */
+/** Print Shop styles — personalized flow docs + generic fixed-sheet docs. */
 
-import { PRINT_VIEW_CONFIG, PRINT_PAGE_MARGIN, PRINT_PAGE_PADDING, PRINT_SHEET_MIN_HEIGHT } from './plannerPrintShell.js';
+import {
+  PRINT_VIEW_CONFIG,
+  PRINT_PAGE_MARGIN,
+  PRINT_PAGE_PADDING,
+  PRINT_SHEET_MIN_HEIGHT,
+} from './plannerPrintShell.js';
+import { isGenericPrintView } from './genericPrintEngine.js';
+
+/** Generic docs: zero @page margin; inset lives on each fixed-size sheet. */
+const GENERIC_SHEET_STYLES = `
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Open Sans", system-ui, sans-serif;
+    background: #ececec;
+    color: #111111;
+    margin: 0;
+  }
+  .generic-print-document {
+    background: #ffffff;
+    color: #111111;
+    margin: 0 auto;
+  }
+  .generic-print-sheet {
+    position: relative;
+    width: 8.5in;
+    height: 11in;
+    padding: 0.35in 0.44in;
+    overflow: hidden;
+    background: #ffffff;
+    page-break-after: always;
+    break-after: page;
+  }
+  .generic-print-sheet--landscape {
+    width: 11in;
+    height: 8.5in;
+  }
+  .generic-print-sheet--last {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  .generic-print-sheet__watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 240px;
+    height: 240px;
+    transform: translate(-50%, -50%);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .generic-print-sheet__surface {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .print-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-shrink: 0;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8e8e8;
+    background: transparent;
+  }
+  .print-logo {
+    display: block;
+    width: 72px;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .print-header-brand {
+    font-family: Oswald, system-ui, sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 4px;
+  }
+  .print-header-title {
+    font-family: Oswald, system-ui, sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #111;
+    line-height: 1.05;
+    margin-bottom: 4px;
+  }
+  @media print {
+    body { background: #fff; }
+    .generic-print-document {
+      background: transparent;
+      margin: 0;
+    }
+    .generic-print-sheet {
+      padding: 0.35in 0.44in;
+      background: #ffffff;
+    }
+  }
+`;
 
 const PRINT_SHELL_STYLES = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -304,6 +414,11 @@ const FOODLIST_CONTENT_STYLES = `
     grid-template-columns: 1fr 1fr 1fr;
     gap: 0;
     align-items: start;
+    flex: 1;
+    min-height: 0;
+  }
+  .food-list-columns--cols-2 {
+    grid-template-columns: 1fr 1fr;
   }
   .food-list-col {
     position: relative;
@@ -391,6 +506,9 @@ const QA_CONTENT_STYLES = `
     display: flex;
     flex-direction: column;
     gap: 5px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
   .faq-item { break-inside: avoid; }
   .faq-question {
@@ -420,6 +538,9 @@ const BESTRESULTS_CONTENT_STYLES = `
   .print-qa-page {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
   }
   .print-qa-item {
     break-inside: avoid;
@@ -460,8 +581,14 @@ const CONTENT_STYLES = {
 
 function buildPrintStylesForView(view) {
   const config = PRINT_VIEW_CONFIG[view] || PRINT_VIEW_CONFIG.week;
-  const pageRule = `@page { size: ${config.pageSize}; margin: ${PRINT_PAGE_MARGIN}; }`;
   const contentStyles = CONTENT_STYLES[view] || CONTENT_STYLES.week;
+
+  if (isGenericPrintView(view)) {
+    const pageRule = `@page { size: ${config.pageSize}; margin: 0; }`;
+    return `${pageRule}\n${GENERIC_SHEET_STYLES}\n${contentStyles}`;
+  }
+
+  const pageRule = `@page { size: ${config.pageSize}; margin: ${PRINT_PAGE_MARGIN}; }`;
   return `${pageRule}\n${PRINT_SHELL_STYLES}\n${contentStyles}`;
 }
 

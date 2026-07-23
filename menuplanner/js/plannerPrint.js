@@ -361,7 +361,6 @@ function buildQaPrintContent(title, pages, { numbered = false } = {}) {
   let questionNumber = 0;
   return pages.map((page, index) => `
     <section class="faq-page print-page print-page--sheet${index > 0 ? ' faq-page--break' : ''}">
-      ${buildPrintWatermarkHtml()}
       ${headerHtml}
       ${page.items.map((item) => {
         questionNumber += 1;
@@ -475,7 +474,6 @@ function buildPrintDocumentHtml(view = 'week') {
   const documentContent = view === 'shopping'
     ? `
       <section class="assistant-panel print-page print-page--sheet">
-        ${buildPrintWatermarkHtml()}
         ${shoppingHeaderHtml}
         ${shoppingHtml}
       </section>
@@ -500,12 +498,13 @@ function buildPrintDocumentHtml(view = 'week') {
     `
       : `
       <section class="assistant-panel print-page print-page--flow">
-        ${buildPrintWatermarkHtml({ repeat: true })}
         ${weekHeaderHtml}
         ${weekHtml}
         ${weekFooterHtml}
       </section>
     `;
+
+  const useDocumentWatermark = view !== 'foodlist';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -518,6 +517,7 @@ function buildPrintDocumentHtml(view = 'week') {
 </head>
 <body>
   <article class="assistant-document">
+    ${useDocumentWatermark ? buildPrintWatermarkHtml({ repeat: true }) : ''}
     ${documentContent}
   </article>
 </body>

@@ -47,22 +47,31 @@ const PRINT_WATERMARK_BASE = `
 `;
 
 const PRINT_SHEET_WATERMARK_MEDIA = `
-  .print-page--sheet {
-    min-height: 10in;
-    box-sizing: border-box;
-    position: relative;
-  }
   .print-page--sheet.faq-page--break,
   .print-page--sheet + .print-page--sheet {
     break-before: page;
     page-break-before: always;
   }
-  .print-page--sheet > .assistant-doc-watermark--page {
-    position: absolute;
+`;
+
+const PRINT_DOCUMENT_WATERMARK_MEDIA = `
+  .assistant-document {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+  .assistant-panel {
+    position: relative;
+    z-index: 1;
+  }
+  .assistant-document > .assistant-doc-watermark--repeat {
+    position: fixed;
     inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 0;
   }
 `;
 
@@ -269,19 +278,7 @@ function buildWeekPrintStyles() {
     }
     @media print {
       body { background: #fff; }
-      .assistant-document {
-        background: transparent;
-        padding: 0;
-        margin: 0;
-        max-width: none;
-      }
-      .print-page--flow > .assistant-doc-watermark--repeat {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      ${PRINT_DOCUMENT_WATERMARK_MEDIA}
       .assistant-doc-header {
         margin-bottom: 20px;
         padding-bottom: 16px;
@@ -415,12 +412,7 @@ function buildShoppingPrintStyles() {
     .assistant-empty { color: #666; font-size: 0.9rem; }
     @media print {
       body { background: #fff; }
-      .assistant-document {
-        background: transparent;
-        padding: 0;
-        margin: 0;
-        max-width: none;
-      }
+      ${PRINT_DOCUMENT_WATERMARK_MEDIA}
       ${PRINT_SHEET_WATERMARK_MEDIA}
       .assistant-doc-header {
         margin-bottom: 20px;
@@ -724,12 +716,7 @@ function buildFaqPrintStyles() {
     }
     @media print {
       body { background: #fff; }
-      .assistant-document {
-        background: transparent;
-        padding: 0;
-        margin: 0;
-        max-width: none;
-      }
+      ${PRINT_DOCUMENT_WATERMARK_MEDIA}
       ${PRINT_SHEET_WATERMARK_MEDIA}
       .assistant-doc-header {
         margin-bottom: 6px;

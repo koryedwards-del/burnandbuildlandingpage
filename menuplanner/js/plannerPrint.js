@@ -205,50 +205,126 @@ const PROTEIN_TIPS = [
   'Measure your serving size after cooking.',
 ];
 
+const GRAINS_STARCHES_TIPS = [
+  'Your daily grain and starch servings are counted together. The Burn & Build Diet divides them fairly even among breakfast, lunch, and dinner.',
+  'Grains include bread, cereal, rice, pasta, and similar foods. Starches include potatoes, corn, peas, beans, and squash.',
+  'Choose whole-grain products when possible. Avoid added fats, sugars, and heavy sauces on grain and starch foods.',
+  'Measure your serving size after cooking.',
+];
+
+const VEGETABLE_TIPS = [
+  'Vegetable servings are eaten at dinner on the Burn & Build Diet. Choose a variety of colorful vegetables throughout the week.',
+  'Fresh, frozen, and canned vegetables without added fat or sugar all count toward your servings.',
+  'Raw or cooked vegetables may be used. One serving of salad greens counts the same as one serving of cooked vegetables.',
+  'Measure your serving size after cooking.',
+];
+
+const FRUIT_TIPS = [
+  'Fruit servings are eaten at snack times on the Burn & Build Diet. Divide your daily fruit servings among your morning, afternoon, and evening snacks.',
+  'Fresh, frozen, and canned fruit without added sugar all count toward your servings.',
+  'Dried fruit and fruit juice are not included on this food list unless listed separately.',
+  'Measure your serving size as indicated on the food list.',
+];
+
+function splitFoodsInHalf(foods) {
+  const splitAt = Math.ceil(foods.length / 2);
+  return [foods.slice(0, splitAt), foods.slice(splitAt)];
+}
+
 function foodsByCategory(categoryId) {
   return state.foods
     .filter((food) => food.category === categoryId)
     .sort((a, b) => a.name.localeCompare(b.name));
 }
 
-function buildFoodListColumn(title, foods) {
+function buildFoodListColumn(title, foods, { hideTitle = false } = {}) {
+  const titleHtml = title
+    ? `<h2 class="food-list-col-title${hideTitle ? ' food-list-col-title--spacer' : ''}"${hideTitle ? ' aria-hidden="true"' : ''}>${escapeHtml(title)}</h2>`
+    : '';
   return `
-    <div class="food-list-col">
-      <h2 class="food-list-col-title">${escapeHtml(title)}</h2>
+    <div class="food-list-col${hideTitle ? ' food-list-col--continued' : ''}${!foods.length ? ' food-list-col--empty' : ''}">
+      ${titleHtml}
+      ${foods.length ? `
       <ul class="food-list-items">
         ${foods.map((food) => `
           <li class="food-list-name">${escapeHtml(food.name)}</li>
         `).join('')}
       </ul>
+      ` : ''}
     </div>
   `;
 }
 
-function buildProteinTipsColumn() {
+function buildFoodListTipsColumn(title, tips) {
   const logoUrl = printLogoUrl();
   return `
     <div class="food-list-col food-list-col--tips">
       <div class="food-list-watermark" aria-hidden="true">
         <img src="${logoUrl}" alt="" />
       </div>
-      <h2 class="food-list-col-title food-list-col-title--tips">Protein Tips</h2>
+      <h2 class="food-list-col-title food-list-col-title--tips">${escapeHtml(title)}</h2>
       <div class="food-list-tips">
-        ${PROTEIN_TIPS.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}
+        ${tips.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function buildFoodListRow({
+  leftTitle,
+  leftFoods,
+  middleTitle = '',
+  middleFoods = [],
+  tipsTitle,
+  tips,
+  hideMiddleTitle = false,
+}) {
+  return `
+    <div class="food-list-section">
+      <div class="food-list-columns">
+        ${buildFoodListColumn(leftTitle, leftFoods)}
+        ${buildFoodListColumn(middleTitle, middleFoods, { hideTitle: hideMiddleTitle })}
+        ${buildFoodListTipsColumn(tipsTitle, tips)}
       </div>
     </div>
   `;
 }
 
 function buildFoodListContent() {
-  const proteinFoods = foodsByCategory('protein');
-  const dairyFoods = foodsByCategory('dairy');
+  const [vegetablesLeft, vegetablesRight] = splitFoodsInHalf(foodsByCategory('vegetable'));
 
   return `
-    <div class="food-list-columns">
-      ${buildFoodListColumn('Protein', proteinFoods)}
-      ${buildFoodListColumn('Dairy', dairyFoods)}
-      ${buildProteinTipsColumn()}
-    </div>
+    ${buildFoodListRow({
+      leftTitle: 'Protein',
+      leftFoods: foodsByCategory('protein'),
+      middleTitle: 'Dairy',
+      middleFoods: foodsByCategory('dairy'),
+      tipsTitle: 'Protein Tips',
+      tips: PROTEIN_TIPS,
+    })}
+    ${buildFoodListRow({
+      leftTitle: 'Grains',
+      leftFoods: foodsByCategory('grain'),
+      middleTitle: 'Starches',
+      middleFoods: foodsByCategory('starch'),
+      tipsTitle: 'Grains & Starches Tips',
+      tips: GRAINS_STARCHES_TIPS,
+    })}
+    ${buildFoodListRow({
+      leftTitle: 'Vegetables',
+      leftFoods: vegetablesLeft,
+      middleTitle: 'Vegetables',
+      middleFoods: vegetablesRight,
+      hideMiddleTitle: true,
+      tipsTitle: 'Vegetable Tips',
+      tips: VEGETABLE_TIPS,
+    })}
+    ${buildFoodListRow({
+      leftTitle: 'Fruit',
+      leftFoods: foodsByCategory('fruit'),
+      tipsTitle: 'Fruit Tips',
+      tips: FRUIT_TIPS,
+    })}
   `;
 }
 
@@ -677,6 +753,11 @@ function buildPrintDocumentHtml(view = 'week') {
       text-align: right;
       flex-shrink: 0;
     }
+    .food-list-section + .food-list-section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #e8e8e8;
+    }
     .food-list-columns {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -718,6 +799,12 @@ function buildPrintDocumentHtml(view = 'week') {
     }
     .food-list-name {
       color: #222;
+    }
+    .food-list-col-title--spacer {
+      visibility: hidden;
+    }
+    .food-list-col--empty {
+      min-height: 1px;
     }
     .food-list-col--tips {
       min-height: 100%;
@@ -774,6 +861,12 @@ function buildPrintDocumentHtml(view = 'week') {
       }
       .food-list-col-title {
         margin-bottom: 6px;
+      }
+      .food-list-section + .food-list-section {
+        page-break-before: always;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
       }
       .agenda-row-head,
       .agenda-cell {

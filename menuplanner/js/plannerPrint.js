@@ -323,7 +323,7 @@ function buildFoodListContent() {
 
 function buildQaPrintContent(view, pages, { numbered = false, variant = 'faq' } = {}) {
   const headerHtml = buildPrintViewHeaderHtml(view, printShellContext());
-  const pageLogoUrl = view === 'bestresults' ? '' : printLogoUrl();
+  const sheet = view !== 'bestresults';
   let questionNumber = 0;
   return pages.map((page, index) => {
     const bodyHtml = variant === 'newspaper'
@@ -361,8 +361,8 @@ function buildQaPrintContent(view, pages, { numbered = false, variant = 'faq' } 
       headerHtml,
       bodyHtml,
       breakBefore: index > 0,
-      sheet: true,
-      logoUrl: pageLogoUrl,
+      sheet,
+      logoUrl: printLogoUrl(),
     });
   }).join('');
 }
@@ -436,6 +436,7 @@ function buildPrintDocumentHtml(view = 'week') {
     bodyHtml = buildPrintPageShell({
       headerHtml: buildPrintViewHeaderHtml(view, printShellContext()),
       bodyHtml: buildBody(),
+      logoUrl: printLogoUrl(),
     });
   } else {
     bodyHtml = buildBody();

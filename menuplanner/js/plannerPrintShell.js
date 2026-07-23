@@ -6,6 +6,12 @@ import { formatPrintDateTime, programClientName } from '../../js/programBridgeUi
 export const PRINT_PAGE_MARGIN = '0.35in';
 export const PRINT_PAGE_PADDING = '36px 44px 36px';
 
+/** Letter page content height after @page top/bottom margins (0.35in each). */
+export const PRINT_SHEET_MIN_HEIGHT = {
+  portrait: '10.3in',
+  landscape: '7.8in',
+};
+
 /** @typedef {'generic' | 'personalized'} PrintHeaderVariant */
 
 /**
@@ -55,9 +61,9 @@ export function printDocumentTitle(view, programPackage) {
   return `B&B- ${docName} - ${name}`;
 }
 
-export function buildPrintWatermarkHtml(logoUrl, mode = 'fixed') {
+export function buildPrintWatermarkHtml(logoUrl) {
   return `
-    <div class="print-watermark print-watermark--${mode}" aria-hidden="true">
+    <div class="print-watermark" aria-hidden="true">
       <img src="${logoUrl}" alt="" />
     </div>
   `;
@@ -104,7 +110,7 @@ export function buildPrintPageShell({
     sheet ? 'print-page--sheet' : '',
     breakBefore ? 'print-page--break' : '',
   ].filter(Boolean).join(' ');
-  const watermarkHtml = logoUrl ? buildPrintWatermarkHtml(logoUrl, 'page') : '';
+  const watermarkHtml = logoUrl ? buildPrintWatermarkHtml(logoUrl) : '';
 
   return `
     <section class="${classes}">
@@ -122,9 +128,6 @@ export function buildPrintDocumentHtml({
   styles,
   bodyHtml,
 }) {
-  const useFixedWatermark = view === 'week' || view === 'shopping' || view === 'bestresults';
-  const fixedWatermarkHtml = useFixedWatermark ? buildPrintWatermarkHtml(logoUrl, 'fixed') : '';
-
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,7 +139,6 @@ export function buildPrintDocumentHtml({
 </head>
 <body class="print-body print-body--${view}">
   <article class="print-document">
-    ${fixedWatermarkHtml}
     ${bodyHtml}
   </article>
 </body>

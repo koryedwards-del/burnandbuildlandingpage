@@ -1,6 +1,6 @@
 /** Print Shop styles — one shell template + content-only extensions. */
 
-import { PRINT_VIEW_CONFIG, PRINT_PAGE_MARGIN, PRINT_PAGE_PADDING } from './plannerPrintShell.js';
+import { PRINT_VIEW_CONFIG, PRINT_PAGE_MARGIN, PRINT_PAGE_PADDING, PRINT_SHEET_MIN_HEIGHT } from './plannerPrintShell.js';
 
 const PRINT_SHELL_STYLES = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,28 +19,29 @@ const PRINT_SHELL_STYLES = `
   .print-watermark {
     z-index: 0;
     pointer-events: none;
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .print-watermark--page {
-    position: absolute;
-    inset: 0;
-  }
-  .print-watermark--fixed {
-    position: fixed;
-    inset: 0;
   }
   .print-watermark img {
     width: 240px;
     height: auto;
     opacity: 0.06;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
   .print-page {
     position: relative;
-    z-index: 1;
     box-sizing: border-box;
     padding: ${PRINT_PAGE_PADDING};
+  }
+  .print-body--foodlist .print-page--sheet {
+    min-height: ${PRINT_SHEET_MIN_HEIGHT.landscape};
+  }
+  .print-body--faq .print-page--sheet {
+    min-height: ${PRINT_SHEET_MIN_HEIGHT.portrait};
   }
   .print-page--break,
   .print-page--sheet + .print-page--sheet {
@@ -116,19 +117,22 @@ const PRINT_SHELL_STYLES = `
     .print-logo {
       width: 72px;
     }
-    .print-watermark--fixed {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .print-watermark--page {
+    .print-watermark {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .print-page:not(.print-page--sheet) .print-watermark {
+      position: fixed;
+      inset: 0;
+    }
+    .print-body--foodlist .print-page--sheet {
+      min-height: ${PRINT_SHEET_MIN_HEIGHT.landscape};
+    }
+    .print-body--faq .print-page--sheet {
+      min-height: ${PRINT_SHEET_MIN_HEIGHT.portrait};
     }
   }
 `;

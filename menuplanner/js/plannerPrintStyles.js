@@ -1,6 +1,9 @@
 /** Print Shop styles — shared shell + per-content extensions. */
 
-import { PRINT_VIEW_CONFIG } from './plannerPrintShell.js';
+import { PRINT_VIEW_CONFIG, PRINT_PAGE_MARGIN } from './plannerPrintShell.js';
+
+/** Header offset from the printable area — same for all five Print Shop documents. */
+const PRINT_PAGE_PADDING = '36px 44px 36px';
 
 const PRINT_SHELL_BASE = `
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,7 +37,7 @@ const PRINT_SHELL_BASE = `
     position: relative;
     z-index: 1;
     box-sizing: border-box;
-    padding: 36px 44px 36px;
+    padding: ${PRINT_PAGE_PADDING};
   }
   .print-page--break,
   .print-page--sheet + .print-page--sheet {
@@ -121,7 +124,7 @@ const PRINT_SHELL_BASE = `
       max-width: none;
     }
     .print-page {
-      padding: 36px 44px 36px;
+      padding: ${PRINT_PAGE_PADDING};
     }
     .print-watermark {
       position: fixed;
@@ -400,7 +403,7 @@ const CONTENT_STYLES = {
 
 function buildPrintStylesForView(view) {
   const config = PRINT_VIEW_CONFIG[view] || PRINT_VIEW_CONFIG.week;
-  const pageRule = `@page { size: ${config.pageSize}; margin: ${config.pageMargin}; }`;
+  const pageRule = `@page { size: ${config.pageSize}; margin: ${PRINT_PAGE_MARGIN}; }`;
   const contentStyles = CONTENT_STYLES[view] || CONTENT_STYLES.week;
   return `${pageRule}\n${PRINT_SHELL_BASE}\n${contentStyles}`;
 }

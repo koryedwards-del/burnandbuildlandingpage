@@ -2,6 +2,9 @@
 
 import { formatPrintDateTime, programClientName } from '../../js/programBridgeUi.js';
 
+/** Shared print margins/padding — identical across all five Print Shop documents. */
+export const PRINT_PAGE_MARGIN = '0.35in';
+
 /** @typedef {'generic' | 'personalized'} PrintHeaderVariant */
 
 /**
@@ -14,7 +17,6 @@ export const PRINT_VIEW_CONFIG = {
   week: {
     docTitle: 'Weekly',
     pageSize: 'landscape',
-    pageMargin: '0.35in',
     headerVariant: 'personalized',
     headerTitle: 'Weekly Meal Plan',
     contentClass: 'print-content--week',
@@ -22,7 +24,6 @@ export const PRINT_VIEW_CONFIG = {
   shopping: {
     docTitle: 'Grocery List',
     pageSize: 'portrait',
-    pageMargin: '0.5in',
     headerVariant: 'personalized',
     headerTitle: 'Grocery List',
     contentClass: 'print-content--shopping',
@@ -30,7 +31,6 @@ export const PRINT_VIEW_CONFIG = {
   foodlist: {
     docTitle: 'Food List',
     pageSize: 'landscape',
-    pageMargin: '0.25in',
     headerVariant: 'generic',
     headerTitle: 'Food List',
     contentClass: 'print-content--foodlist',
@@ -38,7 +38,6 @@ export const PRINT_VIEW_CONFIG = {
   bestresults: {
     docTitle: 'For Best Results',
     pageSize: 'portrait',
-    pageMargin: '0.35in',
     headerVariant: 'generic',
     headerTitle: 'For Best Results',
     contentClass: 'print-content--qa',
@@ -46,7 +45,6 @@ export const PRINT_VIEW_CONFIG = {
   faq: {
     docTitle: 'Frequently Asked Questions',
     pageSize: 'portrait',
-    pageMargin: '0.35in',
     headerVariant: 'generic',
     headerTitle: 'Frequently Asked Questions',
     contentClass: 'print-content--qa',

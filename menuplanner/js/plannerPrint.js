@@ -427,16 +427,14 @@ function buildAssistantHeaderHtml(title, { showMeta = true } = {}) {
 
 function printDocumentTitle(view) {
   const name = programClientName(state.programPackage);
-  if (view === 'shopping') {
-    return `Burn & Build — Grocery List — ${name}`;
-  }
-  if (view === 'foodlist') {
-    return 'Burn & Build — Food List';
-  }
-  if (view === 'faq') {
-    return 'Burn & Build — Frequently Asked Questions';
-  }
-  return `Burn & Build — Weekly — ${name}`;
+  const docName = view === 'shopping'
+    ? 'Grocery List'
+    : view === 'foodlist'
+      ? 'Food List'
+      : view === 'faq'
+        ? 'Frequently Asked Questions'
+        : 'Weekly';
+  return `B&B- ${docName} - ${name}`;
 }
 
 function buildPrintDocumentHtml(view = 'week') {

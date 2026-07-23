@@ -7,9 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../css/program-bridge.css?v=106" />
-  <link rel="stylesheet" href="css/report.css?v=106" />
-  <link rel="stylesheet" href="../menuplanner/css/planner.css?v=106" />
+  <link rel="stylesheet" href="../css/program-bridge.css?v=112" />
+  <link rel="stylesheet" href="css/report.css?v=112" />
+  <link rel="stylesheet" href="../menuplanner/css/planner.css?v=112" />
 </head>
 <body>
   <section id="access-gate" class="mp-access" hidden>
@@ -101,11 +101,12 @@
 
         <section id="planner-page" class="planner-main" hidden>
           <div class="pb-page-head">
-            <p class="pb-eyebrow">Page 4</p>
-            <h2 class="pb-panel__title">Menu planner</h2>
+            <div class="pb-page-head__main">
+              <p class="pb-eyebrow">Page 4</p>
+              <h2 class="pb-panel__title">Menu planner</h2>
+            </div>
+            <p class="pb-servings-note" id="planner-servings" hidden></p>
           </div>
-
-          <div class="pb-doc planner-meta" id="planner-meta"></div>
 
           <main class="planner-frame">
             <div class="week-panel" id="week-panel">
@@ -211,6 +212,6 @@
       event.preventDefault();
     });
   </script>
-  <script type="module" src="js/report.js?v=106"></script>
+  <script type="module" src="js/report.js?v=112"></script>
 </body>
 </html>

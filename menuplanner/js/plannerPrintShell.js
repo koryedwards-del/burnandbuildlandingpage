@@ -6,6 +6,12 @@ import { formatPrintDateTime, programClientName } from '../../js/programBridgeUi
 export const PRINT_PAGE_MARGIN = '0.35in';
 export const PRINT_PAGE_PADDING = '36px 44px 36px';
 
+/** Letter page content height after @page top/bottom margins (0.35in each). */
+export const PRINT_SHEET_MIN_HEIGHT = {
+  portrait: '10.3in',
+  landscape: '7.8in',
+};
+
 /** @typedef {'generic' | 'personalized'} PrintHeaderVariant */
 
 /**
@@ -93,6 +99,7 @@ export function buildPrintViewHeaderHtml(view, context) {
 export function buildPrintPageShell({
   headerHtml,
   bodyHtml,
+  logoUrl,
   breakBefore = false,
   sheet = false,
   sectionClass = '',
@@ -106,8 +113,11 @@ export function buildPrintPageShell({
 
   return `
     <section class="${classes}">
-      ${headerHtml}
-      ${bodyHtml}
+      ${buildPrintWatermarkHtml(logoUrl)}
+      <div class="print-page-surface">
+        ${headerHtml}
+        ${bodyHtml}
+      </div>
     </section>
   `;
 }
@@ -130,7 +140,6 @@ export function buildPrintDocumentHtml({
 </head>
 <body class="print-body print-body--${view}">
   <article class="print-document">
-    ${buildPrintWatermarkHtml(logoUrl)}
     ${bodyHtml}
   </article>
 </body>

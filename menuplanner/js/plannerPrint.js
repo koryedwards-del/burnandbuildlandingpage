@@ -265,6 +265,7 @@ function buildFoodListRow({
 }) {
   return buildPrintPageShell({
     headerHtml,
+    logoUrl: printLogoUrl(),
     bodyHtml: `
       <div class="food-list-columns">
         ${buildFoodListColumn(leftTitle, leftFoods)}
@@ -358,6 +359,7 @@ function buildQaPrintContent(view, pages, { numbered = false, variant = 'faq' } 
       `;
     return buildPrintPageShell({
       headerHtml,
+      logoUrl: printLogoUrl(),
       bodyHtml,
       breakBefore: index > 0,
       sheet,
@@ -433,6 +435,7 @@ function buildPrintDocumentHtml(view = 'week') {
   if (view === 'week' || view === 'shopping') {
     bodyHtml = buildPrintPageShell({
       headerHtml: buildPrintViewHeaderHtml(view, printShellContext()),
+      logoUrl: printLogoUrl(),
       bodyHtml: buildBody(),
     });
   } else {

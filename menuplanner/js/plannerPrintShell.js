@@ -99,6 +99,7 @@ export function buildPrintViewHeaderHtml(view, context) {
 export function buildPrintPageShell({
   headerHtml,
   bodyHtml,
+  logoUrl,
   breakBefore = false,
   sheet = false,
   sectionClass = '',
@@ -112,8 +113,11 @@ export function buildPrintPageShell({
 
   return `
     <section class="${classes}">
-      ${headerHtml}
-      ${bodyHtml}
+      ${buildPrintWatermarkHtml(logoUrl)}
+      <div class="print-page-surface">
+        ${headerHtml}
+        ${bodyHtml}
+      </div>
     </section>
   `;
 }
@@ -135,7 +139,6 @@ export function buildPrintDocumentHtml({
   <style>${styles}</style>
 </head>
 <body class="print-body print-body--${view}">
-  ${buildPrintWatermarkHtml(logoUrl)}
   <article class="print-document">
     ${bodyHtml}
   </article>

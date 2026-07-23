@@ -17,8 +17,13 @@ const PRINT_SHELL_STYLES = `
     position: relative;
   }
   .print-watermark {
-    display: none;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     pointer-events: none;
+    z-index: 0;
   }
   .print-watermark img {
     width: 240px;
@@ -27,10 +32,16 @@ const PRINT_SHELL_STYLES = `
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+  .print-page-surface {
+    position: relative;
+    z-index: 1;
+    background: transparent;
+  }
   .print-page {
     position: relative;
     box-sizing: border-box;
     padding: ${PRINT_PAGE_PADDING};
+    background: #ffffff;
   }
   .print-body--foodlist .print-page--sheet {
     min-height: ${PRINT_SHEET_MIN_HEIGHT.landscape};
@@ -50,6 +61,7 @@ const PRINT_SHELL_STYLES = `
     margin-bottom: 14px;
     padding-bottom: 12px;
     border-bottom: 1px solid #e8e8e8;
+    background: transparent;
   }
   .print-logo {
     display: block;
@@ -103,18 +115,22 @@ const PRINT_SHELL_STYLES = `
     }
     .print-page {
       padding: ${PRINT_PAGE_PADDING};
+      background: transparent;
+    }
+    .print-page-surface,
+    .print-header {
+      background: transparent;
     }
     .print-logo {
       width: 72px;
     }
-    .print-watermark {
-      display: flex;
+    .print-page--sheet .print-watermark {
+      position: absolute;
+      inset: 0;
+    }
+    .print-page:not(.print-page--sheet) .print-watermark {
       position: fixed;
       inset: 0;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      pointer-events: none;
     }
     .print-body--foodlist .print-page--sheet {
       min-height: ${PRINT_SHEET_MIN_HEIGHT.landscape};

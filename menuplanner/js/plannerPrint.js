@@ -1,6 +1,7 @@
 import { ASSET_VERSION as FALLBACK_ASSET_VERSION } from '../../js/assetVersion.js';
 import { FOR_BEST_RESULTS_PRINT_PAGES } from '../../data/forBestResultsPrintout.js';
 import { HANDBOOK_FAQ_PRINT_PAGES } from '../../data/handbookFaqPrintout.js';
+import { PROTEIN_TIPS_QA } from '../../data/proteinTipsPrintout.js';
 import { buildPrintStylesForView } from './plannerPrintStyles.js';
 import {
   printDocumentTitle,
@@ -199,13 +200,6 @@ function weekPlanHasContent() {
   return found;
 }
 
-const PROTEIN_TIPS = [
-  'You should eat the protein servings in equal amounts a minimum of three times throughout the day. The Burn & Build Diet food plan suggests a practical way to break down the protein servings. The servings are divided fairly even among breakfast, lunch, and dinner.',
-  'The protein group includes meat, fish, poultry, and dairy products. We recommend you eat at least one-third of your daily protein servings from the dairy section. We strongly recommend eating the daily servings to ensure calcium intake.',
-  'It is not necessary to use any meat products on this program. If you do not eat meat, you should use egg whites and other dairy products.',
-  'Measure your serving size after cooking.',
-];
-
 const GRAINS_STARCHES_TIPS = [
   'Your daily grain and starch servings are counted together. The Burn & Build Diet divides them fairly even among breakfast, lunch, and dinner.',
   'Grains include bread, cereal, rice, pasta, and similar foods. Starches include potatoes, corn, peas, beans, and squash.',
@@ -256,12 +250,21 @@ function buildFoodListColumn(title, foods, { hideTitle = false } = {}) {
   `;
 }
 
-function buildFoodListTipsColumn(title, tips) {
+function buildFoodListTipsColumn(title, { tips = [], qaItems = [] } = {}) {
+  const tipsBody = qaItems.length
+    ? qaItems.map((item) => `
+      <article class="food-list-qa-item">
+        <h3 class="food-list-qa-question">${escapeHtml(item.q)}</h3>
+        <p class="food-list-qa-answer">${escapeHtml(item.a)}</p>
+      </article>
+    `).join('')
+    : tips.map((paragraph) => `<p class="food-list-tip">${escapeHtml(paragraph)}</p>`).join('');
+
   return `
-    <div class="food-list-col food-list-col--tips">
+    <div class="food-list-col food-list-col--tips${qaItems.length ? ' food-list-col--tips-qa' : ''}">
       <h2 class="food-list-col-title food-list-col-title--tips">${escapeHtml(title)}</h2>
-      <div class="food-list-tips">
-        ${tips.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}
+      <div class="food-list-tips${qaItems.length ? ' food-list-tips--qa' : ''}">
+        ${tipsBody}
       </div>
     </div>
   `;
@@ -274,7 +277,8 @@ function buildFoodListRow({
   middleTitle = '',
   middleFoods = [],
   tipsTitle,
-  tips,
+  tips = [],
+  qaItems = [],
   hideMiddleTitle = false,
 }) {
   return buildPrintPageShell({
@@ -283,7 +287,7 @@ function buildFoodListRow({
       <div class="food-list-columns">
         ${buildFoodListColumn(leftTitle, leftFoods)}
         ${buildFoodListColumn(middleTitle, middleFoods, { hideTitle: hideMiddleTitle })}
-        ${buildFoodListTipsColumn(tipsTitle, tips)}
+        ${buildFoodListTipsColumn(tipsTitle, { tips, qaItems })}
       </div>
     `,
     sheet: true,
@@ -303,7 +307,7 @@ function buildFoodListContent() {
       middleTitle: 'Dairy',
       middleFoods: foodsByCategory('dairy'),
       tipsTitle: 'Protein Tips',
-      tips: PROTEIN_TIPS,
+      qaItems: PROTEIN_TIPS_QA,
     })}
     ${buildFoodListRow({
       headerHtml,

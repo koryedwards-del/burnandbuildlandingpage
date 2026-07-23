@@ -310,13 +310,48 @@ const FOODLIST_CONTENT_STYLES = `
     flex-direction: column;
     gap: 8px;
   }
-  .food-list-tips p {
+  .food-list-tip {
     font-size: 0.62rem;
     line-height: 1.4;
     color: #222;
   }
+  .food-list-tips--qa {
+    gap: 0;
+  }
+  .food-list-qa-item {
+    break-inside: avoid;
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #bbb;
+  }
+  .food-list-qa-item:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+  .food-list-qa-question {
+    font-family: "Open Sans", system-ui, sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    color: #111;
+    margin-bottom: 3px;
+  }
+  .food-list-qa-answer {
+    font-family: Merriweather, Georgia, "Times New Roman", serif;
+    font-size: 0.58rem;
+    line-height: 1.48;
+    color: #222;
+  }
   @media print {
     .food-list-col-title { margin-bottom: 6px; }
+    .food-list-qa-item {
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+    }
+    .food-list-qa-question { font-size: 0.58rem; }
+    .food-list-qa-answer { font-size: 0.54rem; line-height: 1.42; }
   }
 `;
 

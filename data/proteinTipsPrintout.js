@@ -22,6 +22,6 @@ export const PROTEIN_TIPS_QA = [
   },
   {
     q: 'Can I count beans, rice, or nuts as protein?',
-    a: 'Even though beans, rice, and nuts contain protein, they are predominantly complex carbohydrates or fats on this program — not protein. Use the meats, fish, egg whites, and dairy on this list for protein servings.',
+    a: 'Even though beans, rice, and nuts contain protein, they are predominantly complex carbohydrates or fats — not protein. Use the meats, fish, egg whites, and dairy on this list for protein servings.',
   },
 ];

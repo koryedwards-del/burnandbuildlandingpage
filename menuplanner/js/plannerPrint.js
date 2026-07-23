@@ -356,18 +356,25 @@ function buildFoodListContent() {
   `;
 }
 
-function buildQaPrintContent(title, pages) {
+function buildQaPrintContent(title, pages, { numbered = false } = {}) {
   const headerHtml = buildAssistantHeaderHtml(title, { showMeta: false });
+  let questionNumber = 0;
   return pages.map((page, index) => `
     <section class="faq-page print-page print-page--sheet${index > 0 ? ' faq-page--break' : ''}">
       ${buildPrintWatermarkHtml()}
       ${headerHtml}
-      ${page.items.map((item) => `
+      ${page.items.map((item) => {
+        questionNumber += 1;
+        const questionPrefix = numbered
+          ? `<span class="faq-question-num">${questionNumber}.</span> `
+          : '';
+        return `
         <article class="faq-item">
-          <h2 class="faq-question">${escapeHtml(item.q)}</h2>
+          <h2 class="faq-question">${questionPrefix}${escapeHtml(item.q)}</h2>
           <p class="faq-answer">${escapeHtml(item.a)}</p>
         </article>
-      `).join('')}
+      `;
+      }).join('')}
     </section>
   `).join('');
 }
@@ -377,7 +384,7 @@ function buildForBestResultsContent() {
 }
 
 function buildHandbookFaqContent() {
-  return buildQaPrintContent('Frequently Asked Questions', HANDBOOK_FAQ_PRINT_PAGES);
+  return buildQaPrintContent('Frequently Asked Questions', HANDBOOK_FAQ_PRINT_PAGES, { numbered: true });
 }
 
 function buildShoppingListContent() {

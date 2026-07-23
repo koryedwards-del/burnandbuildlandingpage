@@ -714,6 +714,9 @@ function buildFaqPrintStyles() {
       line-height: 1.2;
       margin-bottom: 1px;
     }
+    .faq-question-num {
+      font-weight: 700;
+    }
     .faq-answer {
       font-size: 0.64rem;
       line-height: 1.4;

@@ -1,4 +1,5 @@
 import { ASSET_VERSION as FALLBACK_ASSET_VERSION } from '../../js/assetVersion.js';
+import { FAQ_PRINT_PAGES } from '../../data/faqPrintout.js';
 import {
   formatPrintDateTime,
   programClientName,
@@ -328,6 +329,19 @@ function buildFoodListContent() {
   `;
 }
 
+function buildFaqContent() {
+  return FAQ_PRINT_PAGES.map((page, index) => `
+    <section class="faq-section${index ? ' faq-section--break' : ''}">
+      ${page.items.map((item) => `
+        <article class="faq-item">
+          <h2 class="faq-question">${escapeHtml(item.q)}</h2>
+          <p class="faq-answer">${escapeHtml(item.a)}</p>
+        </article>
+      `).join('')}
+    </section>
+  `).join('');
+}
+
 function buildShoppingListContent() {
   const totals = buildShoppingTotals();
   const categoryOrder = FOOD_CATEGORIES.map((cat) => cat.id);
@@ -393,6 +407,9 @@ function printDocumentTitle(view) {
   if (view === 'foodlist') {
     return 'Burn & Build — Food List';
   }
+  if (view === 'faq') {
+    return 'Burn & Build — Frequently Asked Questions';
+  }
   return `Burn & Build — Weekly — ${name}`;
 }
 
@@ -400,9 +417,11 @@ function buildPrintDocumentHtml(view = 'week') {
   const shoppingHtml = buildShoppingListContent();
   const weekHtml = buildWeekAgendaContent();
   const foodListHtml = buildFoodListContent();
+  const faqHtml = buildFaqContent();
   const weekHeaderHtml = buildWeekPlanReportHeaderHtml();
   const shoppingHeaderHtml = buildAssistantHeaderHtml('Shopping List');
   const foodListHeaderHtml = buildAssistantHeaderHtml('Food List', { showMeta: false });
+  const faqHeaderHtml = buildAssistantHeaderHtml('Frequently Asked Questions', { showMeta: false });
   const weekFooterHtml = `
     <footer class="assistant-doc-footer">
       <span>Burn &amp; Build Diet</span>
@@ -413,7 +432,9 @@ function buildPrintDocumentHtml(view = 'week') {
     ? 'view-shopping'
     : view === 'foodlist'
       ? 'view-foodlist'
-      : 'view-week';
+      : view === 'faq'
+        ? 'view-faq'
+        : 'view-week';
   const documentContent = view === 'shopping'
     ? `
       <section class="assistant-panel">
@@ -426,6 +447,13 @@ function buildPrintDocumentHtml(view = 'week') {
       <section class="assistant-panel">
         ${foodListHeaderHtml}
         ${foodListHtml}
+      </section>
+    `
+      : view === 'faq'
+        ? `
+      <section class="assistant-panel">
+        ${faqHeaderHtml}
+        ${faqHtml}
       </section>
     `
       : `
@@ -463,6 +491,9 @@ function buildPrintDocumentHtml(view = 'week') {
     body.view-foodlist {
       page: foodlist-page;
     }
+    body.view-faq {
+      page: portrait-page;
+    }
     .assistant-document {
       background: #ffffff;
       color: #111111;
@@ -497,6 +528,26 @@ function buildPrintDocumentHtml(view = 'week') {
     }
     body.view-foodlist .assistant-doc-meta {
       font-size: 0.68rem;
+    }
+    body.view-faq .assistant-document {
+      max-width: 620px;
+      padding: 24px 32px 32px;
+    }
+    body.view-faq .assistant-doc-header {
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      gap: 14px;
+    }
+    body.view-faq .assistant-logo {
+      width: 48px;
+    }
+    body.view-faq .assistant-doc-brand {
+      font-size: 0.58rem;
+      margin-bottom: 2px;
+    }
+    body.view-faq .assistant-doc-title {
+      font-size: 1.35rem;
+      margin-bottom: 0;
     }
     .assistant-doc-header {
       display: flex;
@@ -835,6 +886,33 @@ function buildPrintDocumentHtml(view = 'week') {
       line-height: 1.4;
       color: #222;
     }
+    .faq-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .faq-section--break {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #e8e8e8;
+    }
+    .faq-item {
+      break-inside: avoid;
+    }
+    .faq-question {
+      font-family: Oswald, system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #111;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+    .faq-answer {
+      font-size: 0.74rem;
+      line-height: 1.55;
+      color: #333;
+    }
     @media print {
       body { background: #fff; }
       .assistant-document {
@@ -863,6 +941,23 @@ function buildPrintDocumentHtml(view = 'week') {
         margin-bottom: 6px;
       }
       .food-list-section + .food-list-section {
+        page-break-before: always;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+      body.view-faq .assistant-doc-header {
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+      }
+      body.view-faq .assistant-logo {
+        width: 44px;
+      }
+      body.view-faq .assistant-document {
+        padding: 0;
+        max-width: none;
+      }
+      .faq-section--break {
         page-break-before: always;
         margin-top: 0;
         padding-top: 0;

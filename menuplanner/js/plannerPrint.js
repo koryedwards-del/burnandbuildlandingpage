@@ -217,10 +217,7 @@ function buildFoodListColumn(title, foods) {
       <h2 class="food-list-col-title">${escapeHtml(title)}</h2>
       <ul class="food-list-items">
         ${foods.map((food) => `
-          <li>
-            <span class="food-list-name">${escapeHtml(food.name)}</span>
-            <span class="food-list-serving">${escapeHtml(scaledLabel(food, 1))}</span>
-          </li>
+          <li class="food-list-name">${escapeHtml(food.name)}</li>
         `).join('')}
       </ul>
     </div>
@@ -715,24 +712,12 @@ function buildPrintDocumentHtml(view = 'week') {
       gap: 0;
     }
     .food-list-items li {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 6px;
       font-size: 0.56rem;
       line-height: 1.2;
       padding: 1px 0;
-      border-bottom: 1px solid #eee;
     }
     .food-list-name {
-      flex: 1;
-      min-width: 0;
-    }
-    .food-list-serving {
-      flex-shrink: 0;
-      font-weight: 600;
-      color: #333;
-      text-align: right;
+      color: #222;
     }
     .food-list-col--tips {
       min-height: 100%;
